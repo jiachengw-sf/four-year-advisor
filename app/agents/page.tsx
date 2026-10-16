@@ -8,7 +8,7 @@ import { getContext, submitAgentReply } from "../actions";
 import { Button, Card, CopyButton, StatusMessage, textareaClass, type Status } from "../ui";
 
 const CARDS: { agent: AgentName; title: string; owner: string; description: string }[] = [
-  { agent: "input", title: "Input agent", owner: "A", description: "Paste the resume and essay along with this context." },
+  { agent: "input", title: "Input agent", owner: "A", description: "Attach or paste the student's documents (resume, LinkedIn, transcript, essays) along with this context." },
   { agent: "knowledge", title: "Knowledge Retrieval agent", owner: "A", description: "What to learn next. Consumes handoffs." },
   { agent: "opportunity", title: "Opportunity Retrieval agent", owner: "C", description: "Ready, almost, and long-term opportunities." },
   { agent: "patterns", title: "Learning Patterns agent", owner: "B", description: "Updates mastery, pace, and method scores from events." },

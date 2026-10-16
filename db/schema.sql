@@ -77,3 +77,6 @@ create table agent_outputs (
 
 create index on agent_outputs (student_id, agent, created_at desc);
 create index on agent_outputs (student_id, to_agent) where kind = 'handoff' and consumed = false;
+
+-- Realtime: lets the dashboard update when a teammate saves from another laptop.
+alter publication supabase_realtime add table agent_outputs, student_skills;

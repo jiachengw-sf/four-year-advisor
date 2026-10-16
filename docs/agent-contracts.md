@@ -54,7 +54,7 @@ Input: Agent context (skill catalog with base hours, skills, goals, learning pro
 `type` is one of: practice, video, reading, project.
 
 ## Opportunity Retrieval agent (C)
-Input: Agent context (skills, interests, goals, opportunity list).
+Input: Agent context (current date, skills, interests, goals, opportunity list).
 ```json
 {
   "agent": "opportunity",
@@ -75,7 +75,7 @@ Input: Agent context (skills, interests, goals, opportunity list).
 Every "almost" item must also appear in `handoffs`.
 
 ## Learning Patterns agent (B)
-Input: Agent context (skills, learning profile, recent events such as check-ins and quiz scores).
+Input: Agent context (skills, learning profile, node categories, last review time, recent events such as check-ins and quiz scores).
 ```json
 {
   "agent": "patterns",
@@ -90,6 +90,7 @@ Input: Agent context (skills, learning profile, recent events such as check-ins 
 }
 ```
 Keep deltas between -0.3 and 0.3. multiplier > 1 means slower than average.
+Check-ins already update mastery, confidence, and pace in code. Return `skill_deltas` and `pace_updates` only for evidence code hasn't applied: events with `"applied": false` newer than `last_review_at`, or notes pasted with the context. Otherwise use `[]`. In event payloads, `confidence` is a 1–5 self-rating and `score` is 0–100.
 
 ## Advisor agent (D, built last)
 ```json

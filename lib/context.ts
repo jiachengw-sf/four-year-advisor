@@ -93,12 +93,31 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
           .order("opportunity_id")
           .then((r) => rows(r, "Reading opportunities")),
       ]);
-      return { student: s, student_skills: skills, opportunities: opps };
+      return {
+        current_date: new Date().toISOString().slice(0, 10),
+        student: s,
+        student_skills: skills,
+        opportunities: opps,
+      };
     }
     case "patterns": {
-      const [skills, profile, events] = await Promise.all([
+      const [skills, profile, catalog, lastReview, events] = await Promise.all([
         studentSkills(studentId),
         learningProfile(studentId),
+        db
+          .from("skill_nodes")
+          .select("node_id, category")
+          .order("node_id")
+          .then((r) => rows(r, "Reading skill catalog")),
+        db
+          .from("agent_outputs")
+          .select("created_at")
+          .eq("student_id", studentId)
+          .eq("agent", "patterns")
+          .eq("kind", "result")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .then((r) => rows(r, "Reading last patterns review")),
         db
           .from("events")
           .select("type, node_id, payload, created_at")
@@ -107,7 +126,23 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
           .limit(20)
           .then((r) => rows(r, "Reading events")),
       ]);
-      return { student_skills: skills, learning_profile: profile, recent_events: events };
+      return {
+        student_skills: skills,
+        learning_profile: profile,
+        node_categories: Object.fromEntries(
+          (catalog as { node_id: string; category: string }[]).map((n) => [n.node_id, n.category]),
+        ),
+        // Events before this were already reviewed by an earlier Patterns output (golden included).
+        last_review_at: (lastReview as { created_at: string }[])[0]?.created_at ?? null,
+        recent_events: (events as { type: string; node_id: string | null; payload: Record<string, unknown>; created_at: string }[]).map(
+          // A check-in's model_update means code already applied it to mastery, confidence, and pace.
+          ({ payload: { model_update, summary: _s, ...reported }, ...e }) => ({
+            ...e,
+            payload: reported,
+            applied: model_update !== undefined,
+          }),
+        ),
+      };
     }
     case "advisor": {
       const s = (await student(studentId)) as { weekly_hours: number } | null;

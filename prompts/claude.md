@@ -178,21 +178,22 @@ Do not search every listed platform independently. Use accessible, high-quality 
 
 ### Opportunity Research Agent
 
-For the hackathon, prioritize:
+Team decision: for the hackathon, the Opportunity agent does the core contract only. The runtime prompt is `prompts/opportunity.md`.
+
+Prioritize:
+
+- Sorting seeded opportunities into ready, almost, and long_term from the student's skills, goals, and deadlines
+- One canonical skill-gap handoff to Knowledge Retrieval for every "almost" item
+- Only seeded `opportunity_id`s and canonical skill ids
+
+Deferred (full design kept in `docs/specs/opportunity-agent.md`):
 
 - Proactive career questions
-- Relevant, publicly verifiable Berkeley alumni evidence
-- Recent graduates before older alumni
-- Current opportunity or career-requirement corroboration
-- Exactly five insights for a new student
-- Exactly three new or materially updated insights for a returning student
-- Follow-ups for relevant unresolved previous insights
-- Advisor planning signals
-- Canonical skill-gap handoffs to Knowledge Retrieval
+- Berkeley alumni research, recent graduates first
+- Five initial / three returning insights, with follow-ups and memory reconciliation
+- Advisor planning signals and source records
 
-Use only accessible public evidence. Do not infer sensitive background characteristics. Do not recommend a specific person's path as the only correct path.
-
-If live research is unreliable for the demo, use a clearly labeled, pre-verified golden research result. Do not present fictional data as live research.
+Do not invent opportunities, deadlines, or links. Do not infer sensitive background characteristics.
 
 ### Learning Patterns Agent
 

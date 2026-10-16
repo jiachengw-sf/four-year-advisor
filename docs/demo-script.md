@@ -20,7 +20,7 @@ Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `sample
 
 ## 4. Live check-in triggers a re-plan (40s)
 
-- Submit a check-in: "45 minutes on graphs, still confused," confidence 0.4.
+- Submit a check-in: "45 minutes on graphs, still confused," confidence 2.
 - Run the **Learning Patterns agent**, then the **Advisor agent**.
 - Show the **"What changed and why"** card: "Graph algorithms moved to #1 after your check-in said you were still confused." This week's plan now leads with a practice set, not a video.
 

@@ -16,8 +16,8 @@ A college advisor that sticks with a student for all four years. It learns their
 |---|---|
 | A | Input agent + Knowledge Retrieval agent prompts, skill catalog (`seed/skills.csv`), demo persona (`seed/persona.md`) |
 | B | Learning Patterns agent prompt, synthetic events (`seed/events.json`) |
-| C | Opportunity Retrieval agent prompt, opportunities list (`seed/opportunities.csv`) |
-| D | Site, database, dashboard, Advisor agent prompt |
+| C | Opportunity Retrieval agent prompt, opportunities list (`seed/opportunities.csv`), handoff format |
+| D | Site, database, dashboard, update math, Advisor agent prompt |
 
 ## Where to put your work
 
@@ -29,20 +29,18 @@ A college advisor that sticks with a student for all four years. It learns their
 
 ### `seed/events.json` format
 
-An array of events. Each event looks like this:
+An array of about 10 events for the demo persona, spread over a few weeks and showing a clear pattern. The full example is in [docs/agent-contracts.md](docs/agent-contracts.md#seed-data-formats).
 
 ```json
-{
-  "type": "checkin",
-  "node_id": "graph_algorithms",
-  "payload": { "minutes": 45, "confidence": 0.4, "score": 0.4 },
-  "created_at": "2026-10-20T18:00:00Z"
-}
+{ "type": "checkin", "node_id": "graph_algorithms", "payload": { "minutes": 180, "confidence": 2 }, "created_at": "2026-09-20T18:00:00Z" }
 ```
 
 - `type`: `checkin`, `quiz`, `resource_feedback`, or `goal_change` (matches the `events` table in `db/schema.sql`).
 - `node_id`: an id from `seed/skills.csv`.
-- `payload`: `minutes` spent, `confidence` (0 to 1), and `score` (0 to 1, for quizzes). Leave out the fields that don't apply.
+- `payload` depends on the type:
+  - `checkin`: `minutes`, `confidence`
+  - `quiz`: `score`
+  - `resource_feedback`: `resource_type`, `helped`
 - `created_at`: an ISO timestamp.
 
 ## Local setup

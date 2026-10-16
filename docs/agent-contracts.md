@@ -111,3 +111,23 @@ A: skill catalog (~30 nodes), CSV or JSON:
 
 C: opportunities (~15 real ones), CSV or JSON:
 `opportunity_id, type (club|research|internship), title, required_nodes (comma-separated), deadline, link, tags`
+
+A: demo persona, `seed/persona.md`: the student's resume text and one essay (UC PIQ or Common App). Remove phone, email and address.
+
+B: synthetic events (~10), `seed/events.json`: a history of check-ins and quizzes for the persona, spread over a few weeks, that shows a clear pattern (e.g. scores jump after practice problems, slow on algorithms topics).
+```json
+[
+  { "type": "checkin", "node_id": "graph_algorithms", "payload": { "minutes": 180, "confidence": 2 }, "created_at": "2026-09-20T18:00:00Z" },
+  { "type": "quiz", "node_id": "graph_algorithms", "payload": { "score": 40 }, "created_at": "2026-09-21T18:00:00Z" },
+  { "type": "resource_feedback", "node_id": "graph_algorithms", "payload": { "resource_type": "practice", "helped": true }, "created_at": "2026-09-22T18:00:00Z" }
+]
+```
+`type` is one of: checkin, quiz, resource_feedback, goal_change. Use node_ids from A's catalog.
+
+## Who owns what
+| Person | Agent prompts | Seed data | Other |
+| --- | --- | --- | --- |
+| A | Input, Knowledge Retrieval | skills.csv, persona.md | |
+| B | Learning Patterns | events.json | |
+| C | Opportunity Retrieval | opportunities.csv | Handoff format |
+| D | Advisor (last) | | Site, Supabase, dashboard, update math |

@@ -42,6 +42,7 @@ export type Dashboard = {
   skills: StudentSkill[];
   opportunities: Opportunity[];
   handoffs: Handoff[];
+  lastCheckin: { type: string; node_id: string | null; created_at: string; summary: string } | null;
 };
 
 type Res<T> = { data: T | null; error: { message: string } | null };
@@ -81,7 +82,7 @@ export async function buildDashboard(studentId: string, demoMode: boolean): Prom
       .order("created_at", { ascending: false })
       .limit(10);
 
-  const [student, advisor, knowledge, opportunity, patterns, profile, nodes, edges, skills, opportunities, handoffsAll] =
+  const [student, advisor, knowledge, opportunity, patterns, profile, nodes, edges, skills, opportunities, handoffsAll, checkins] =
     await Promise.all([
       db
         .from("students")
@@ -111,7 +112,16 @@ export async function buildDashboard(studentId: string, demoMode: boolean): Prom
         .select("opportunity_id, type, title, deadline, link")
         .then((r) => rows(r, "Reading opportunities")),
       handoffQuery().then((r) => rows(r, "Reading handoffs")),
+      db
+        .from("events")
+        .select("type, node_id, created_at, payload")
+        .eq("student_id", studentId)
+        .in("type", ["checkin", "quiz"])
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .then((r) => rows(r, "Reading check-ins")),
     ]);
+  const latestCheckin = (checkins as { type: string; node_id: string | null; created_at: string; payload: { summary?: string } }[])[0];
 
   let handoffs = handoffsAll as Handoff[];
   if (demoMode) {
@@ -131,5 +141,8 @@ export async function buildDashboard(studentId: string, demoMode: boolean): Prom
     skills: (skills as StudentSkill[]).map((s) => ({ ...s, mastery: Number(s.mastery), confidence: Number(s.confidence) })),
     opportunities: opportunities as Opportunity[],
     handoffs,
+    lastCheckin: latestCheckin?.payload?.summary
+      ? { type: latestCheckin.type, node_id: latestCheckin.node_id, created_at: latestCheckin.created_at, summary: latestCheckin.payload.summary }
+      : null,
   };
 }

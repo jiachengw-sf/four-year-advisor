@@ -68,6 +68,7 @@ export function DashboardView({ data }: { data: Dashboard }) {
   const learnNext = knowledge?.payload.learn_next ?? [];
   const top = learnNext[0];
   const changes = [
+    ...(data.lastCheckin ? [`Check-in: ${data.lastCheckin.summary}`] : []),
     ...describeDiff(knowledge?.payload._diff, lookups.nodeName),
     ...(advisor?.payload.what_changed ?? []),
   ];

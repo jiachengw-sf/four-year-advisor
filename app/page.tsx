@@ -7,6 +7,7 @@ import { useDemoMode } from "@/lib/useDemoMode";
 import { useRealtime } from "@/lib/useRealtime";
 import { useStudentId } from "@/lib/useStudent";
 import { getDashboard } from "./actions";
+import { CheckIn } from "./CheckIn";
 import { DashboardView } from "./DashboardView";
 
 export default function DashboardPage() {
@@ -46,6 +47,16 @@ export default function DashboardPage() {
   if (error) return <p className="text-red-600">Could not load the dashboard: {error}</p>;
   if (!data) return <p className="text-zinc-500">Loading...</p>;
 
-  return <DashboardView data={data} />;
+  return (
+    <>
+      <DashboardView data={data} />
+      <CheckIn
+        studentId={studentId}
+        nodes={data.nodes}
+        defaultNode={data.knowledge?.payload.learn_next[0]?.node_id}
+        onSaved={load}
+      />
+    </>
+  );
 }
 

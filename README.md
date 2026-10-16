@@ -46,11 +46,11 @@ An array of about 10 events for the demo persona, spread over a few weeks and sh
 ## Local setup
 
 1. Copy `.env.example` to `.env.local` and fill in your Supabase URL and anon key.
-2. Run `db/schema.sql` in the Supabase SQL editor.
+2. Create the tables: run `db/schema.sql` in the Supabase SQL editor, or with the Supabase CLI run `npx supabase link --project-ref <ref>` and then `npx supabase db push` (applies `supabase/migrations/`).
 3. `npm install`
 4. `npm run dev`
 
-The Next.js app isn't in the repo yet. Steps 3 and 4 will work once D adds it.
+Then open http://localhost:3000/admin, create the demo student, import the CSVs, and click "Load samples".
 
 ## Repo map
 

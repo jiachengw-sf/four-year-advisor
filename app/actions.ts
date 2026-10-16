@@ -3,6 +3,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { parseAgentReply, type AgentName, type AgentOutput } from "@/lib/contracts";
+import { recordCheckin, type CheckinForm, type CheckinResult } from "@/lib/checkin";
 import { buildContext } from "@/lib/context";
 import { buildDashboard, type Dashboard } from "@/lib/dashboard";
 import { saveOutput, type SaveResult } from "@/lib/save";
@@ -140,4 +141,8 @@ export async function getDashboard(
   } catch (e) {
     return { ok: false, error: (e as Error).message };
   }
+}
+
+export async function submitCheckin(studentId: string, form: CheckinForm): Promise<CheckinResult> {
+  return recordCheckin(studentId, form);
 }

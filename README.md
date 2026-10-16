@@ -57,6 +57,7 @@ Then open http://localhost:3000/admin, create the demo student, import the CSVs,
 ```
 docs/agent-contracts.md   JSON shape every agent must return
 docs/demo-script.md       3-minute demo + judge Q&A
+docs/specs/               full design specs behind each agent prompt
 db/schema.sql             Supabase tables (agent_outputs = blackboard)
 prompts/                  Superhuman agent instructions
 seed/                     skill catalog, opportunities, events, persona

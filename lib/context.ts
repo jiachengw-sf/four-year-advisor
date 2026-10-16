@@ -40,8 +40,14 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
       return { skill_catalog: catalog };
     }
     case "knowledge": {
-      const [s, skills, profile, edges, handoffs] = await Promise.all([
+      const [s, catalog, skills, profile, edges, handoffs] = await Promise.all([
         student(studentId),
+        db
+          .from("skill_nodes")
+          .select("node_id, name, category, base_hours")
+          .order("category")
+          .order("node_id")
+          .then((r) => rows(r, "Reading skill catalog")),
         studentSkills(studentId),
         learningProfile(studentId),
         db.from("skill_edges").select("from_node, to_node").then((r) => rows(r, "Reading skill edges")),
@@ -57,6 +63,7 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
       ]);
       return {
         student: s,
+        skill_catalog: catalog,
         student_skills: skills,
         learning_profile: profile,
         skill_edges: edges,

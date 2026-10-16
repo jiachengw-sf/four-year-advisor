@@ -33,7 +33,7 @@ Input: resume text + essay text + Agent context (contains the skill catalog).
 ```
 
 ## Knowledge Retrieval agent (A)
-Input: Agent context (skills, goals, learning profile, unread handoffs).
+Input: Agent context (skill catalog with base hours, skills, goals, learning profile, prerequisite edges, unread handoffs).
 ```json
 {
   "agent": "knowledge",

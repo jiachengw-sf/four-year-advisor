@@ -145,25 +145,52 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
       };
     }
     case "advisor": {
-      const s = (await student(studentId)) as { weekly_hours: number } | null;
+      const latestOf = async (a: AgentName) => {
+        const r = rows(
+          await db
+            .from("agent_outputs")
+            .select("payload, created_at")
+            .eq("student_id", studentId)
+            .eq("agent", a)
+            .eq("kind", "result")
+            .order("created_at", { ascending: false })
+            .limit(1),
+          `Reading latest ${a} output`,
+        ) as { payload: object; created_at: string }[];
+        return r[0] ? { ...r[0].payload, saved_at: r[0].created_at } : null;
+      };
       const others: AgentName[] = ["input", "knowledge", "opportunity", "patterns"];
-      const latest = await Promise.all(
-        others.map(async (a) => {
-          const r = rows(
-            await db
-              .from("agent_outputs")
-              .select("payload, created_at")
-              .eq("student_id", studentId)
-              .eq("agent", a)
-              .eq("kind", "result")
-              .order("created_at", { ascending: false })
-              .limit(1),
-            `Reading latest ${a} output`,
-          ) as { payload: object; created_at: string }[];
-          return [a, r[0] ? { ...r[0].payload, saved_at: r[0].created_at } : null] as const;
-        }),
-      );
-      return { weekly_hours: s?.weekly_hours ?? null, latest_outputs: Object.fromEntries(latest) };
+      const [s, catalog, profile, latest, previousPlan, events] = await Promise.all([
+        student(studentId),
+        db
+          .from("skill_nodes")
+          .select("node_id, name, category")
+          .order("node_id")
+          .then((r) => rows(r, "Reading skill catalog")),
+        learningProfile(studentId),
+        Promise.all(others.map(async (a) => [a, await latestOf(a)] as const)),
+        latestOf("advisor"),
+        db
+          .from("events")
+          .select("type, node_id, payload, created_at")
+          .eq("student_id", studentId)
+          .order("created_at", { ascending: false })
+          .limit(10)
+          .then((r) => rows(r, "Reading events")),
+      ]);
+      return {
+        current_date: new Date().toISOString().slice(0, 10),
+        weekly_hours: (s as { weekly_hours: number } | null)?.weekly_hours ?? null,
+        student: s,
+        skill_catalog: catalog,
+        learning_profile: profile,
+        latest_outputs: Object.fromEntries(latest),
+        previous_plan: previousPlan,
+        recent_events: (events as { type: string; node_id: string | null; payload: Record<string, unknown>; created_at: string }[]).map(
+          // Keep what the student reported plus the site's one-line summary of how the model moved.
+          ({ payload: { model_update: _u, ...reported }, ...e }) => ({ ...e, payload: reported }),
+        ),
+      };
     }
   }
 }

@@ -93,6 +93,7 @@ Keep deltas between -0.3 and 0.3. multiplier > 1 means slower than average.
 Check-ins already update mastery, confidence, and pace in code. Return `skill_deltas` and `pace_updates` only for evidence code hasn't applied: events with `"applied": false` newer than `last_review_at`, or notes pasted with the context. Otherwise use `[]`. In event payloads, `confidence` is a 1–5 self-rating and `score` is 0–100.
 
 ## Advisor agent (D, built last)
+Input: Agent context (current date, student and weekly hours, skill names, learning profile, latest output of every other agent, previous plan, recent check-ins).
 ```json
 {
   "agent": "advisor",

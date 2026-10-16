@@ -274,8 +274,17 @@ async function savePatterns(studentId: string, out: PatternsOutput, isGolden: bo
 }
 
 async function saveAdvisor(studentId: string, out: AdvisorOutput, isGolden: boolean): Promise<SaveResult> {
+  const warnings: string[] = [];
+  const student = must(
+    await supabase().from("students").select("weekly_hours").eq("id", studentId).maybeSingle(),
+    "Reading weekly hours",
+  ) as { weekly_hours: number | null } | null;
+  const total = out.this_week.reduce((sum, t) => sum + t.hours, 0);
+  if (student?.weekly_hours && total > student.weekly_hours) {
+    warnings.push(`This week's plan is ${total}h but the student has ${student.weekly_hours}h a week.`);
+  }
   const id = await insertResult(studentId, "advisor", out, isGolden);
-  return { ok: true, id, warnings: [] };
+  return { ok: true, id, warnings };
 }
 
 export async function saveOutput(studentId: string, out: AgentOutput, isGolden: boolean): Promise<SaveResult> {

@@ -1,1 +1,4 @@
 opportunity_id,type,title,required_nodes,deadline,link,tags
+opp_acm_club,club,ACM Student Chapter,,,https://example.com/acm,"ml,community"
+opp_google_step,internship,Google STEP Internship,"python_basics,graph_algorithms",2026-11-15,https://example.com/step,swe
+opp_ml_lab,research,Undergraduate ML Research Lab,"linear_algebra,ml_basics",,,research

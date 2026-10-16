@@ -31,7 +31,7 @@ Short notes, then **exactly one fenced `json` block as the last thing in your re
 Notes (8 lines at most):
 
 ```
-Skipped: opp_hackathon_x (deadline passed), opp_bio_lab (no fit with goals)
+Skipped: none (every opportunity fits her goals and none has passed its deadline)
 Closest call: opp_google_step in almost (Python strong, graph algorithms missing)
 ```
 

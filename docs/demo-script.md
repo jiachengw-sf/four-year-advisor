@@ -2,6 +2,8 @@
 
 Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `samples/`).
 
+**Setup order in /admin:** import `seed/skills.csv` and `seed/opportunities.csv`, load `seed/events.json`, and run the Learning Patterns agent live **before** clicking "Load samples". Patterns ignores events older than its last saved output, golden ones included, so loading samples first makes the seeded history count as already reviewed.
+
 ## 1. Problem (20s)
 
 "Most students see an advisor for 15 minutes a semester. That advisor doesn't know what you learned last week, how fast you learn, or which internship deadline is coming up. 4-Year Advisor stays with you for all four years and keeps that picture up to date."

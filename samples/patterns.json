@@ -1,12 +1,16 @@
 {
   "agent": "patterns",
   "skill_deltas": [
-    { "node_id": "graph_algorithms", "mastery_delta": -0.1, "confidence_delta": 0.2 },
-    { "node_id": "recursion", "mastery_delta": 0.1, "confidence_delta": 0.1 }
+    { "node_id": "graph_algorithms", "mastery_delta": 0.2, "confidence_delta": 0.2 },
+    { "node_id": "recursion", "mastery_delta": 0.15, "confidence_delta": 0.2 }
   ],
   "pace_updates": [
     { "category": "algorithms", "multiplier": 1.4 }
   ],
   "method_scores": { "practice": 0.8, "video": 0.3, "reading": 0.5, "project": 0.6 },
-  "tips": ["Your quiz scores rise after practice problems, not videos."]
+  "tips": [
+    "Your quiz scores rise after practice problems, not videos: your graph quiz went from 40 to 55 once you switched.",
+    "Algorithms take you about 1.4x the average time, so split graph work into two shorter sessions a week.",
+    "Recursion clicked after 8 practice problems: use the same approach for graph traversal."
+  ]
 }

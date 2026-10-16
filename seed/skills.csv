@@ -1,1 +1,6 @@
 node_id,name,category,base_hours,prerequisites
+python_basics,Python basics,programming,6,
+recursion,Recursion,algorithms,4,python_basics
+graph_algorithms,Graph algorithms,algorithms,8,"python_basics,recursion"
+linear_algebra,Linear algebra,math,12,
+ml_basics,ML basics,ml,10,"python_basics,linear_algebra"

@@ -1,0 +1,8 @@
+{
+  "agent": "advisor",
+  "this_week": [
+    { "title": "Graph algorithms practice set", "node_id": "graph_algorithms", "hours": 3, "reason": "STEP deadline in 4 weeks" },
+    { "title": "Linear algebra chapters 1-3", "node_id": "linear_algebra", "hours": 2, "reason": "Starts the path to the ML lab" }
+  ],
+  "what_changed": ["Graph algorithms moved to #1 after your check-in said you were still confused."]
+}

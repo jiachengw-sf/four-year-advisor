@@ -1,0 +1,15 @@
+{
+  "agent": "opportunity",
+  "ready": [
+    { "opportunity_id": "opp_acm_club", "reason": "Matches ML interest; no prerequisites" }
+  ],
+  "almost": [
+    { "opportunity_id": "opp_google_step", "reason": "Strong Python", "missing_nodes": ["graph_algorithms"], "deadline": "2026-11-15" }
+  ],
+  "long_term": [
+    { "opportunity_id": "opp_ml_lab", "reason": "Needs linear algebra and ML basics first" }
+  ],
+  "handoffs": [
+    { "to_agent": "knowledge", "opportunity_id": "opp_google_step", "missing_nodes": ["graph_algorithms"], "deadline": "2026-11-15" }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "agent": "knowledge",
+  "learn_next": [
+    {
+      "node_id": "graph_algorithms",
+      "reason": "Needed for Google STEP (due Nov 15); quiz score 40%",
+      "est_hours": 8,
+      "resources": [
+        { "title": "BFS/DFS practice set", "url": "https://example.com/bfs-dfs-practice", "type": "practice" },
+        { "title": "Graph traversal walkthrough", "url": "https://example.com/graph-traversal-video", "type": "video" }
+      ],
+      "milestones": ["Solve 5 BFS problems", "Pass graph quiz at 80%"]
+    },
+    {
+      "node_id": "linear_algebra",
+      "reason": "Prerequisite for the ML lab; fits interest in machine learning",
+      "est_hours": 12,
+      "resources": [
+        { "title": "Vectors and matrices notes", "url": "https://example.com/linear-algebra-notes", "type": "reading" }
+      ],
+      "milestones": ["Finish chapters 1-3", "Implement matrix multiply in Python"]
+    }
+  ],
+  "consumed_handoffs": ["handoff-1"]
+}

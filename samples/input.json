@@ -1,0 +1,18 @@
+{
+  "agent": "input",
+  "student": {
+    "name": "Maya Lopez",
+    "year": 1,
+    "major": "Computer Science",
+    "career_goals": ["software engineering internship"],
+    "interests": ["machine learning", "education"],
+    "weekly_hours": 10
+  },
+  "skills": [
+    { "node_id": "python_basics", "mastery": 0.8, "confidence": 0.7, "evidence": "Resume: built a Flask app" },
+    { "node_id": "recursion", "mastery": 0.5, "confidence": 0.4, "evidence": "Essay: mentions struggling with recursive problems in AP CS" },
+    { "node_id": "graph_algorithms", "mastery": 0.2, "confidence": 0.3, "evidence": "No coursework listed; inferred from AP CS syllabus" },
+    { "node_id": "linear_algebra", "mastery": 0.1, "confidence": 0.5, "evidence": "Not taken yet; high school math through calculus" }
+  ],
+  "verify_nodes": ["recursion"]
+}

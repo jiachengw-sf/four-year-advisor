@@ -1,0 +1,12 @@
+{
+  "agent": "patterns",
+  "skill_deltas": [
+    { "node_id": "graph_algorithms", "mastery_delta": -0.1, "confidence_delta": 0.2 },
+    { "node_id": "recursion", "mastery_delta": 0.1, "confidence_delta": 0.1 }
+  ],
+  "pace_updates": [
+    { "category": "algorithms", "multiplier": 1.4 }
+  ],
+  "method_scores": { "practice": 0.8, "video": 0.3, "reading": 0.5, "project": 0.6 },
+  "tips": ["Your quiz scores rise after practice problems, not videos."]
+}

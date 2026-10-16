@@ -13,7 +13,7 @@ Shared rules
 ---
 
 ## Input agent (A)
-Input: resume text + essay text + Agent context (contains the skill catalog).
+Input: the student's documents in any format (resume, LinkedIn export, transcripts, score reports, UC PIQs or other essays; files or pasted text) + Agent context (contains the skill catalog).
 ```json
 {
   "agent": "input",
@@ -112,7 +112,7 @@ A: skill catalog (~30 nodes), CSV or JSON:
 C: opportunities (~15 real ones), CSV or JSON:
 `opportunity_id, type (club|research|internship), title, required_nodes (comma-separated), deadline, link, tags`
 
-A: demo persona, `seed/persona.md`: the student's resume text and one essay (UC PIQ or Common App). Remove phone, email and address.
+A: demo persona, `seed/persona.md` (and files in `seed/persona/`): realistic documents for a fictional student, in any format. No real contact details.
 
 B: synthetic events (~10), `seed/events.json`: a history of check-ins and quizzes for the persona, spread over a few weeks, that shows a clear pattern (e.g. scores jump after practice problems, slow on algorithms topics).
 ```json

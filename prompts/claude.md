@@ -133,7 +133,7 @@ When simplifying an implementation, preserve a clean boundary that allows later 
 
 For example:
 
-- Accept pasted transcript text now; add transcript parsing later.
+- Accept transcript files and text as the student provides them now (the agent reads them); add LMS sync later.
 - Use seeded opportunities now; add live opportunity retrieval later.
 - Use public accessible alumni pages now; add authorized professional-data integrations later.
 - Use seeded events now; add LMS integrations later.
@@ -144,16 +144,16 @@ For example:
 
 For the hackathon, prioritize:
 
-- Resume text
-- One essay or personal statement
-- Basic student metadata
+- Whatever documents the student provides, in any format and layout: resume, LinkedIn export, transcripts, test score reports, UC PIQs or other essays, activities, portfolios. Uploaded files or pasted text.
+- No required template: the agent identifies each document and extracts what it can. Never ask the student to reformat.
+- Basic student metadata, derived from the documents
 - Seeded canonical skill catalog
 - Evidence-backed starting skill estimates
 - Low-confidence verification nodes
 
 Defer unless already implemented:
 
-- Live LinkedIn retrieval
+- Live LinkedIn retrieval from a URL (an uploaded or pasted LinkedIn export is supported)
 - Canvas integration
 - Gradescope integration
 - Full international curriculum normalization

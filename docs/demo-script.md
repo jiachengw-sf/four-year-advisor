@@ -8,7 +8,7 @@ Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `sample
 
 ## 2. Onboarding builds the knowledge graph (40s)
 
-- Paste Maya's resume and essay. Copy the Agent context into the **Input agent** in Superhuman.
+- Drop Maya's documents (resume PDF, LinkedIn export, transcript, PIQs) into the **Input agent** in Superhuman along with the Agent context. No reformatting: the agent figures out what each file is.
 - Paste the JSON reply back. It's validated and saved to `agent_outputs`.
 - Show the knowledge graph filling in: Python strong, recursion shaky, graph algorithms weak. Point out `verify_nodes`: the system knows what it isn't sure about and asks.
 

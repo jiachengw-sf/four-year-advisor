@@ -3,7 +3,7 @@
 - **Owner:** A
 - **What it does:** Reads whatever documents a new student has (resume, LinkedIn, transcript, application essays, and more) and returns their starting profile and skill estimates.
 - **Output contract:** [docs/agent-contracts.md#input-agent-a](../docs/agent-contracts.md#input-agent-a)
-- **Full design spec:** [docs/specs/input-agent.md](../docs/specs/input-agent.md) (A's complete version, including future sources like transcripts and Canvas)
+- **Full design spec:** [docs/specs/input-agent.md](../docs/specs/input-agent.md) (A's complete version, including future integrations like Canvas and Gradescope)
 
 Paste everything below the line into the Superhuman agent's instructions.
 
@@ -103,7 +103,7 @@ Then the JSON, in exactly this shape:
 - **Count each fact once.** The same project on the resume, LinkedIn, and an essay is one piece of evidence.
 - **Infer prerequisites cautiously.** A Flask app shows Python. It doesn't show databases unless they say so.
 - **Never invent** node_ids, goals, interests, schools, or numbers the documents don't support.
-- **Leave out** phone numbers, emails, and home addresses everywhere in your reply.
+- **Leave out** phone numbers, emails, home addresses, student ID numbers, and birthdates everywhere in your reply.
 
 ## Field rules
 

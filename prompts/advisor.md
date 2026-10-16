@@ -32,6 +32,8 @@ The user pastes an **Agent context** JSON block:
 - `weekly_hours`: the hours the student has this week for this plan
 - `student`: name, year, major, `career_goals`, `interests`
 - `skill_catalog`: `{ node_id, name, category }`. Use the names when you write.
+- `student_skills`: **current** mastery and confidence per skill, from 0 to 1, after every check-in so far. Use these, not the onboarding numbers in `latest_outputs.input`.
+- `opportunities`: `{ opportunity_id, type, title, deadline }`. Look up deadlines here.
 - `learning_profile`:
   - `pace_by_category`: how much longer or shorter than average the student takes, per category (1.4 means 40% longer)
   - `method_scores`: what works for them (practice, video, reading, project), from 0 to 1
@@ -79,9 +81,9 @@ Then the JSON, in exactly this shape:
 
 1. **Gather candidates** only from the context:
    - each `knowledge.learn_next` item, with its resources and milestones
-   - each opportunity in `almost` (and `ready`, if there's a deadline soon)
+   - each opportunity in `almost`, plus `ready` ones whose deadline in `opportunities` is within 4 weeks (an application step)
 2. **Prioritize** by `gap × importance to their goal × deadline urgency`:
-   - **Gap:** how far mastery is from where they need it. Low quiz scores or confidence 1–2 in `recent_events` make it bigger.
+   - **Gap:** how far current mastery (`student_skills`) is from where they need it. Low quiz scores or confidence 1–2 in `recent_events` make it bigger.
    - **Importance:** how directly it serves their `career_goals`. A missing skill for an "almost" opportunity counts a lot.
    - **Urgency:** how soon the deadline is. Anything due within 4 weeks comes first.
 
@@ -94,7 +96,10 @@ Then the JSON, in exactly this shape:
 
 You can't run other agents, so check whether their outputs are stale and tell the user in your "Re-run first" note:
 
-- An event in `recent_events`, or a student note, that's newer than an agent's `saved_at` and affects its work. A check-in on a skill makes Knowledge stale. A goal change makes Opportunity and Knowledge stale.
+- An event in `recent_events`, or a student note, that's newer than an agent's `saved_at` and affects its work:
+  - any new check-in, quiz, or feedback makes **Patterns** stale
+  - a check-in on a skill makes Knowledge stale
+  - a goal change makes Opportunity and Knowledge stale
 - A missing (`null`) output that the plan needs.
 
 Re-run order: Patterns → Opportunity → Knowledge → Advisor. Always still return the best plan you can from what's there now. If nothing is stale, write "Re-run first: none".

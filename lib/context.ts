@@ -160,13 +160,19 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
         return r[0] ? { ...r[0].payload, saved_at: r[0].created_at } : null;
       };
       const others: AgentName[] = ["input", "knowledge", "opportunity", "patterns"];
-      const [s, catalog, profile, latest, previousPlan, events] = await Promise.all([
+      const [s, catalog, skills, opps, profile, latest, previousPlan, events] = await Promise.all([
         student(studentId),
         db
           .from("skill_nodes")
           .select("node_id, name, category")
           .order("node_id")
           .then((r) => rows(r, "Reading skill catalog")),
+        studentSkills(studentId),
+        db
+          .from("opportunities")
+          .select("opportunity_id, type, title, deadline")
+          .order("opportunity_id")
+          .then((r) => rows(r, "Reading opportunities")),
         learningProfile(studentId),
         Promise.all(others.map(async (a) => [a, await latestOf(a)] as const)),
         latestOf("advisor"),
@@ -183,6 +189,8 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
         weekly_hours: (s as { weekly_hours: number } | null)?.weekly_hours ?? null,
         student: s,
         skill_catalog: catalog,
+        student_skills: skills,
+        opportunities: opps,
         learning_profile: profile,
         latest_outputs: Object.fromEntries(latest),
         previous_plan: previousPlan,

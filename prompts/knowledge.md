@@ -27,7 +27,9 @@ The user pastes an **Agent context** JSON block:
 - `skill_edges`: prerequisites, as `{ from_node, to_node }`, meaning learn `from_node` before `to_node`
 - `unconsumed_handoffs`: requests from other agents, as `{ id, from_agent, opportunity_id, missing_nodes, deadline }`. Usually: "the student needs these skills for this opportunity by this date."
 
-The user may add a note, such as a recent check-in ("still confused about graphs"). Take it into account.
+- `recent_events`: the last 10 check-ins and quizzes, newest first, as `{ type, node_id, payload, created_at }`. In `payload`, `minutes` is time studied, `confidence` is a 1–5 self-rating, and `score` is a quiz score from 0 to 100.
+
+**React to recent events.** A low quiz score or a check-in with confidence 1–2 on a node is a strong signal: move that node up and favor the method that has worked for the student. Name the event in `reason`, e.g. "your graph quiz score was 40%". The user may also add a note, such as "still confused about graphs". Treat it the same way.
 
 ## Your reply
 

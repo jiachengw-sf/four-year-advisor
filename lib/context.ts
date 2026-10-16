@@ -40,7 +40,7 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
       return { skill_catalog: catalog };
     }
     case "knowledge": {
-      const [s, catalog, skills, profile, edges, handoffs] = await Promise.all([
+      const [s, catalog, skills, profile, edges, handoffs, events] = await Promise.all([
         student(studentId),
         db
           .from("skill_nodes")
@@ -60,6 +60,13 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
           .eq("consumed", false)
           .order("created_at")
           .then((r) => rows(r, "Reading handoffs")),
+        db
+          .from("events")
+          .select("type, node_id, payload, created_at")
+          .eq("student_id", studentId)
+          .order("created_at", { ascending: false })
+          .limit(10)
+          .then((r) => rows(r, "Reading events")),
       ]);
       return {
         student: s,
@@ -69,6 +76,10 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
         skill_edges: edges,
         unconsumed_handoffs: (handoffs as { id: string; agent: string; payload: object; created_at: string }[]).map(
           (h) => ({ id: h.id, from_agent: h.agent, ...h.payload, created_at: h.created_at }),
+        ),
+        recent_events: (events as { type: string; node_id: string | null; payload: Record<string, unknown>; created_at: string }[]).map(
+          // The check-in's model_update/summary are site bookkeeping; the agent only needs what the student reported.
+          ({ payload: { model_update: _u, summary: _s, ...reported }, ...e }) => ({ ...e, payload: reported }),
         ),
       };
     }

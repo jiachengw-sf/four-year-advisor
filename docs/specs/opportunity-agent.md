@@ -8,7 +8,7 @@
 
 Act as a senior AI prompt engineer, multi-agent systems architect, retrieval-system designer, and product engineer.
 
-You are working in the `jiachengw-sf/just_do_it` repository on the four-year personal advisor project. Your task is to create the **Opportunity Research Agent** owned by Owner C.
+You are working in the `jiachengw-sf/four-year-advisor` repository on the four-year personal advisor project. Your task is to create the **Opportunity Research Agent** owned by Owner C.
 
 The final agent will run in Superhuman Go. It will receive an `Agent context` JSON object from the website and return structured JSON that the website validates and stores in Supabase for other agents to consume.
 

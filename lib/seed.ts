@@ -146,3 +146,31 @@ export async function importEvents(studentId: string, json: string): Promise<Imp
   if (ins.error) return fail(`Saving events failed: ${ins.error.message}`);
   return { ok: true, message: `Loaded ${parsed.data.length} events for the demo student.`, errors: [] };
 }
+
+// Clears the student's agent outputs, skills, and learning profile, then reloads seed/events.json.
+// Catalog and opportunities are re-imported too, so the demo starts from the repo's seed files.
+export async function resetDemo(
+  studentId: string,
+  files: { skills: string; opportunities: string; events: string },
+): Promise<ImportResult> {
+  const db = supabase();
+  for (const table of ["agent_outputs", "student_skills"] as const) {
+    const del = await db.from(table).delete().eq("student_id", studentId);
+    if (del.error) return fail(`Clearing ${table} failed: ${del.error.message}`);
+  }
+  const prof = await db.from("learning_profile").upsert(
+    { student_id: studentId, pace_by_category: {}, method_scores: {}, tips: [], updated_at: new Date().toISOString() },
+    { onConflict: "student_id" },
+  );
+  if (prof.error) return fail(`Resetting learning profile failed: ${prof.error.message}`);
+
+  const steps = [
+    await importSkills(files.skills),
+    await importOpportunities(files.opportunities),
+    await importEvents(studentId, files.events),
+  ];
+  const failed = steps.find((s) => !s.ok);
+  const errors = steps.flatMap((s) => s.errors);
+  if (failed) return fail(`Cleared the demo, but reseeding failed: ${failed.message}`, errors);
+  return { ok: true, message: `Cleared outputs, skills, and profile. ${steps.map((s) => s.message).join(" ")}`, errors };
+}

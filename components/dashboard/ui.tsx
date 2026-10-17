@@ -8,7 +8,7 @@ export function Card({
   className = "",
   children,
 }: {
-  step: number;
+  step?: number;
   title: string;
   source?: string;
   golden?: boolean;
@@ -20,9 +20,11 @@ export function Card({
       className={`flex flex-col rounded-2xl border border-zinc-200/80 bg-white p-6 shadow-sm shadow-zinc-200/50 dark:border-zinc-800 dark:bg-zinc-900 dark:shadow-none ${className}`}
     >
       <header className="mb-4 flex items-center gap-3">
-        <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-xs font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
-          {step}
-        </span>
+        {step !== undefined && (
+          <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-xs font-semibold text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+            {step}
+          </span>
+        )}
         <h2 className="text-lg font-semibold tracking-tight">{title}</h2>
         <div className="ml-auto flex items-center gap-1.5">
           {source && (

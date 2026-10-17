@@ -1,5 +1,8 @@
 import Link from "next/link";
 import { connection } from "next/server";
+import { CheckinButton } from "@/components/checkin/CheckinButton";
+import { KnowledgeGraph } from "@/components/graph/KnowledgeGraph";
+import { loadGraph } from "@/lib/model";
 import {
   HandoffFeed,
   HowToLearn,
@@ -12,13 +15,16 @@ import {
 } from "./cards";
 import { loadDashboard } from "./data";
 import { LiveRefresh } from "./LiveRefresh";
+import { Card } from "./ui";
 
 export async function Dashboard() {
   await connection();
 
   let data;
+  let graph;
   try {
     data = await loadDashboard();
+    if (data) graph = await loadGraph(data.student.id);
   } catch (e) {
     return (
       <p className="rounded-xl border border-rose-200 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-900 dark:bg-rose-950 dark:text-rose-200">
@@ -74,8 +80,14 @@ export async function Dashboard() {
         <HowToLearn d={data} l={l} />
       </div>
 
-      {/* TODO(Agent D): the knowledge graph mounts here. */}
-      <div id="graph-slot" />
+      {/* Agent D's knowledge graph */}
+      <div id="graph-slot">
+        {graph && (
+          <Card title="Knowledge map" source="Live model">
+            <KnowledgeGraph nodes={graph.nodes} edges={graph.edges} />
+          </Card>
+        )}
+      </div>
 
       <WhatElse d={data} l={l} />
 
@@ -84,8 +96,12 @@ export async function Dashboard() {
         <LearningPatterns d={data} l={l} />
       </div>
 
-      {/* TODO(Agent D): the check-in button and toast mount here. */}
-      <div id="checkin-slot" />
+      {/* Agent D's check-in button: positions itself fixed bottom-right */}
+      <div id="checkin-slot">
+        {graph && (
+          <CheckinButton studentId={s.id} skills={graph.nodes.map((n) => ({ node_id: n.node_id, name: n.name }))} />
+        )}
+      </div>
     </div>
   );
 }

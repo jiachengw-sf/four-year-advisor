@@ -31,7 +31,7 @@ async function callNvidia(key: string, system: string, user: string): Promise<st
         { role: "user", content: user },
       ],
     }),
-    signal: AbortSignal.timeout(240000),
+    signal: AbortSignal.timeout(120000),
   });
   if (!res.ok) throw new Error(`NVIDIA API ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const body = (await res.json()) as { choices: { message: { content: string } }[] };
@@ -47,7 +47,7 @@ async function callClaude(system: string, user: string): Promise<string> {
     method: "POST",
     headers: { "x-api-key": key, "anthropic-version": "2023-06-01", "content-type": "application/json" },
     body: JSON.stringify({ model: process.env.ADVISOR_MODEL || CLAUDE_MODEL, max_tokens: 8000, system, messages: [{ role: "user", content: user }] }),
-    signal: AbortSignal.timeout(240000),
+    signal: AbortSignal.timeout(120000),
   });
   if (!res.ok) throw new Error(`Claude API ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const body = (await res.json()) as { content: { type: string; text?: string }[] };
@@ -63,8 +63,16 @@ export async function runAgentStep(agent: AgentName, studentId: string, document
 
   let user = base;
   let lastErrors: string[] = [];
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const reply = await callClaude(system, user);
+  for (let attempt = 0; attempt < 3; attempt++) {
+    let reply: string;
+    try {
+      reply = await callClaude(system, user);
+    } catch (e) {
+      // A slow or dropped model call is retried; the third failure is reported.
+      lastErrors = [(e as Error).message];
+      if (attempt === 2) break;
+      continue;
+    }
     const parsed = parseAgentReply(agent, reply);
     if (parsed.ok) {
       const saved = await saveOutput(studentId, parsed.data, false);

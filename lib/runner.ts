@@ -9,7 +9,7 @@ import { saveOutput } from "@/lib/save";
 // reply goes through the same validate-and-save path as a pasted reply.
 // Provider: NVIDIA (OpenAI-compatible) when NVIDIA_API_KEY is set, otherwise Anthropic.
 // ADVISOR_MODEL overrides the default model for whichever provider is used.
-const NVIDIA_MODEL = "meta/llama-3.3-70b-instruct";
+const NVIDIA_MODEL = "nvidia/nemotron-3-super-120b-a12b";
 const CLAUDE_MODEL = "claude-sonnet-5-5";
 
 async function instructions(agent: AgentName): Promise<string> {

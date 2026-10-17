@@ -3,6 +3,8 @@ import { supabase } from "./supabase";
 
 // The demo student is the first row of students (oldest first). Null if there isn't one yet.
 export async function getDemoStudentId(): Promise<string | null> {
+  // The jeremy worktree pins its student with DEMO_STUDENT_ID in .env.local.
+  if (process.env.DEMO_STUDENT_ID) return process.env.DEMO_STUDENT_ID;
   const { data, error } = await supabase()
     .from("students")
     .select("id")

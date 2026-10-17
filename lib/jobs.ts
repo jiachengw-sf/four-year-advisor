@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase";
 // agent's context lists them and its reply validates against them.
 // Indeed and LinkedIn block automated access, so they are not used.
 export const JOB_PREFIX = "opp_job_";
-const BOARDS = ["stripe", "databricks", "coinbase", "robinhood", "figma", "duolingo", "airbnb", "reddit"];
+const BOARDS = ["stripe", "databricks", "coinbase", "figma", "duolingo", "waymo", "verkada", "pinterest", "nuro", "scaleai"];
 const MAX_ROWS = 10;
 
 type GhJob = { id: number; title: string; absolute_url: string; location?: { name?: string }; company_name?: string };
@@ -24,8 +24,9 @@ export type FetchedJob = {
 // Heuristic: which catalog skills a posting plausibly needs, from its title.
 function requiredNodes(title: string): string[] {
   const t = title.toLowerCase();
-  if (/machine learning|\bml\b|\bai\b|data scien|research/.test(t)) return ["python_basics", "linear_algebra", "ml_basics"];
-  if (/software|engineer|developer|backend|full.?stack|infrastructure|swe/.test(t)) return ["python_basics", "graph_algorithms"];
+  if (/embedded|firmware|hardware|electrical|robot|sensor|perception|automation/.test(t)) return ["circuits", "digital_logic", "microcontrollers", "python_basics"];
+  if (/machine learning|\bml\b|\bai\b|data scien|research/.test(t)) return ["python_basics", "linear_algebra", "probability_statistics", "ml_basics"];
+  if (/software|engineer|developer|backend|full.?stack|infrastructure|swe/.test(t)) return ["python_basics", "data_structures", "graph_algorithms"];
   return ["python_basics"];
 }
 
@@ -42,7 +43,7 @@ async function board(name: string): Promise<FetchedJob[]> {
     if (!res.ok) return [];
     const { jobs } = (await res.json()) as { jobs: GhJob[] };
     return jobs
-      .filter((j) => /\bintern(ship)?\b/i.test(j.title) && !/high school/i.test(j.title))
+      .filter((j) => /\bintern(ship)?\b/i.test(j.title) && !/high school|phd|master|\bms\b|marketing|sales|account|finance|content|recruit|social media/i.test(j.title))
       .map((j) => ({
         opportunity_id: `${JOB_PREFIX}${name}_${j.id}`,
         type: "internship" as const,

@@ -4,3 +4,17 @@ recursion,Recursion,algorithms,4,python_basics
 graph_algorithms,Graph algorithms,algorithms,8,"python_basics,recursion"
 linear_algebra,Linear algebra,math,12,
 ml_basics,ML basics,ml,10,"python_basics,linear_algebra"
+calculus,Calculus,math,10,
+multivariable_calculus,Multivariable calculus,math,12,calculus
+differential_equations,Differential equations,math,12,calculus
+probability_statistics,Probability and statistics,math,10,calculus
+number_theory,Number theory,math,8,
+combinatorics,Combinatorics,math,8,
+proof_writing,Proof writing,math,8,
+mechanics,Classical mechanics,physics,10,calculus
+electromagnetism,Electricity and magnetism,physics,10,calculus
+circuits,Circuit analysis,engineering,10,calculus
+digital_logic,Digital logic,engineering,8,
+microcontrollers,Microcontrollers and embedded systems,engineering,8,digital_logic
+data_structures,Data structures,programming,10,"python_basics,recursion"
+data_analysis,Data analysis and modeling,ml,8,"python_basics,probability_statistics"

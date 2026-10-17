@@ -217,7 +217,7 @@ export function HowToLearn({ d, l }: { d: DashboardData; l: Lookups }) {
   );
 }
 
-/* 5. What else do I need */
+/* 5. What opportunity should I pursue */
 export function WhatElse({ d, l }: { d: DashboardData; l: Lookups }) {
   const o = d.opportunity?.payload;
   const columns = o
@@ -228,7 +228,7 @@ export function WhatElse({ d, l }: { d: DashboardData; l: Lookups }) {
       ] as const)
     : [];
   return (
-    <Card step={5} title="What else do I need" source="Opportunity" golden={d.opportunity?.is_golden}>
+    <Card step={5} title="What opportunity should I pursue" source="Opportunity" golden={d.opportunity?.is_golden}>
       {o ? (
         <div className="grid gap-5 md:grid-cols-3">
           {columns.map((col) => (

@@ -17,13 +17,13 @@ import { loadDashboard } from "./data";
 import { LiveRefresh } from "./LiveRefresh";
 import { Card } from "./ui";
 
-export async function Dashboard() {
+export async function Dashboard({ studentId }: { studentId: Promise<string | undefined> }) {
   await connection();
 
   let data;
   let graph;
   try {
-    data = await loadDashboard();
+    data = await loadDashboard(await studentId);
     if (data) graph = await loadGraph(data.student.id);
   } catch (e) {
     return (

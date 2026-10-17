@@ -55,8 +55,9 @@ function rows<T>(res: Res<T>, what: string): T {
   return res.data as T;
 }
 
-async function demoStudent(): Promise<Student | null> {
-  const id = await getDemoStudentId();
+// ?student=<uuid> picks a test student; otherwise the demo student.
+async function pickStudent(requested?: string): Promise<Student | null> {
+  const id = requested || (await getDemoStudentId());
   if (!id) return null;
   const res = await supabase()
     .from("students")
@@ -97,8 +98,8 @@ async function handoffs(studentId: string): Promise<Handoff[]> {
   return rows(await base(), "Reading handoffs") as Handoff[];
 }
 
-export async function loadDashboard(): Promise<DashboardData | null> {
-  const student = await demoStudent();
+export async function loadDashboard(requested?: string): Promise<DashboardData | null> {
+  const student = await pickStudent(requested);
   if (!student) return null;
   const db = supabase();
   const id = student.id;

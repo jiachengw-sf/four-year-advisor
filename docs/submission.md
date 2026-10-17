@@ -53,5 +53,5 @@ Superhuman Go, Next.js, Supabase, zod, React Flow.
 ## Next
 
 - Connect the agents directly instead of copy and paste.
-- Pull real calendars, transcripts and deadlines, with student consent.
+- Pull live postings from Indeed and LinkedIn and match them to each student's resume.
 - Add human advisors, so a student arrives at a meeting knowing their gaps.

@@ -18,7 +18,7 @@ Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `sample
 
 - **Opportunities:** ready (ACM club), almost (Google STEP, missing graph algorithms, due Nov 15), long term (ML lab).
 - **Learn next:** graph algorithms first, because the Opportunity agent handed it to the Knowledge agent. Show the handoff row on the blackboard being consumed.
-- **Learning profile:** practice works better than video for Maya, and algorithms take her 1.4x the average time.
+- **Learning profile:** practice works better than video for Maya, and algorithms take her 1.3x the average time.
 
 ## 4. Live check-in triggers a re-plan (40s)
 
@@ -35,10 +35,10 @@ Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `sample
 | What did you do? | 45 minutes on graphs, still confused |
 | Quiz score | leave empty |
 
-Expected, with Maya at graph algorithms mastery 0.40 and algorithms pace 1.4 (Input 0.2 + Patterns delta 0.2):
+Expected, with Maya at graph algorithms mastery 0.40 and algorithms pace 1.3 (no graph row from Input, so the 0.3 prior + Patterns delta 0.1):
 
-- **Toast:** "Graph algorithms: mastery 0.40 → 0.38, estimate 11.2h → 12.6h (you're taking longer on algorithms)"
-- **Knowledge map:** the Graph algorithms node turns from amber to red (red is below 0.40), and its panel shows 12.6h and "Check-in: 45 min, confidence 2/5".
+- **Toast:** "Graph algorithms: mastery 0.40 → 0.38, estimate 10.4h → 12.1h (you're taking longer on algorithms)"
+- **Knowledge map:** the Graph algorithms node turns from amber to red (red is below 0.40), and its panel shows 12.1h and "Check-in: 45 min, confidence 2/5".
 - **What changed and why:** updates only after the Patterns and Advisor re-runs, not on the check-in alone.
 
 If the live run leaves different values, the toast numbers change. Check the graph node's mastery and estimate before going on stage. The amber → red flip happens only if graph mastery is 0.40–0.42 going in. Below 0.40 it's already red, and above 0.42 it stays amber; the estimate still rises either way.

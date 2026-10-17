@@ -4,7 +4,7 @@ Word-for-word script for the video. It follows [demo-script.md](demo-script.md).
 
 **Before recording:** Maya's reset and live agent runs must be finished. Open `/` with Maya. Have a Superhuman Go tab ready for the Input agent and Patterns agent. Don't click "Load samples" during the recording.
 
-**Check against the screen:** the numbers below (1.4x algorithms, Google STEP due Nov 15, practice over video) come from `demo-script.md` and the samples. If Maya's final live run shows different numbers, change the spoken numbers to match what's on screen.
+**Check against the screen:** the numbers below (1.3x algorithms, Google STEP due Nov 15, practice over video) come from `demo-script.md` and the samples. If Maya's final live run shows different numbers, change the spoken numbers to match what's on screen.
 
 ---
 
@@ -29,7 +29,7 @@ Word-for-word script for the video. It follows [demo-script.md](demo-script.md).
 >
 > "Now 'What should I learn'. Graph algorithms comes first, because the Opportunity agent handed it to the Knowledge agent. The agents can't call each other, so the handoff goes through a shared table. You can see it in the handoff feed, marked as consumed."
 >
-> "And 'Learning patterns': practice works better than video for Maya, and algorithms take her about one point four times the average."
+> "And 'Learning patterns': practice works better than video for Maya, and algorithms take her about one point three times the average."
 
 ## 1:40–2:30 Live check-in triggers a re-plan
 **On screen:** click **Check in** on the graph node. Type "45 minutes on graphs, still confused", confidence 2, submit. Show the graph update. Go tab: run **Patterns**, then **Advisor**, paste each reply back. Return to `/` and point at **What changed and why**, then **This week**.

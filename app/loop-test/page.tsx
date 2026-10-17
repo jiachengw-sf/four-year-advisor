@@ -1,10 +1,11 @@
 import { CheckinButton } from "@/components/checkin/CheckinButton";
 import { KnowledgeGraph } from "@/components/graph/KnowledgeGraph";
 import { loadGraph } from "@/lib/model";
+import { getDemoStudentId } from "@/lib/student";
 import { supabase } from "@/lib/supabase";
 
 // Standalone test page for the check-in loop. Pick a student with ?student=<uuid>;
-// without one, the most recently created student is used.
+// without one, the demo student is used.
 export default async function LoopTestPage({
   searchParams,
 }: {
@@ -14,10 +15,11 @@ export default async function LoopTestPage({
   const { data: students, error } = await supabase()
     .from("students")
     .select("id, name")
-    .order("created_at", { ascending: false });
+    .order("created_at", { ascending: true });
   if (error) throw new Error(`Reading students: ${error.message}`);
 
-  const student = (students ?? []).find((s) => s.id === requested) ?? students?.[0];
+  const fallback = await getDemoStudentId();
+  const student = (students ?? []).find((s) => s.id === (requested ?? fallback)) ?? students?.[0];
   if (!student) {
     return <main className="p-6 text-sm">No students yet. Create one on the dashboard first.</main>;
   }

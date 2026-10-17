@@ -1,5 +1,6 @@
 import "server-only";
 import { z } from "zod";
+import { describeUpdate, updateModel } from "./checkinMath";
 import { supabase } from "./supabase";
 
 // The student model loop: a check-in or quiz updates mastery and pace, and the graph reads it back.
@@ -39,7 +40,6 @@ function must<T>(res: Res<T>, what: string): T {
   return res.data as T;
 }
 
-const clamp = (n: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, n));
 const round = (n: number, dp: number) => Math.round(n * 10 ** dp) / 10 ** dp;
 const MAX_EVIDENCE = 10;
 
@@ -70,27 +70,26 @@ export async function applyCheckin(studentId: string, input: CheckinInput): Prom
       .then((r) => must(r, "Reading learning profile") as { pace_by_category: Record<string, number> | null } | null),
   ]);
 
-  const m = Number(skill?.mastery ?? 0);
-  const c = Number(skill?.confidence ?? 0);
-  const target = hasScore ? f.score! / 100 : (f.confidence - 1) / 4;
-  const mastery = clamp(m + (hasScore ? 0.4 : 0.15) * (target - m), 0, 1);
-  const confidence = Math.min(1, c + 0.1);
-
+  // The update math lives in lib/checkinMath.ts so every check-in path agrees on it.
   const paceByCategory = { ...(profile?.pace_by_category ?? {}) };
-  const baseHours = Number(node.base_hours);
-  const pace = Number(paceByCategory[node.category] ?? 1);
-  const predicted = baseHours * pace;
-  const newPace = predicted > 0 ? 0.7 * pace + 0.3 * (f.minutes / 60 / predicted) : pace;
+  const update = updateModel(
+    {
+      mastery: Number(skill?.mastery ?? 0),
+      confidence: Number(skill?.confidence ?? 0),
+      pace: Number(paceByCategory[node.category] ?? 1),
+      baseHours: Number(node.base_hours),
+    },
+    { minutes: f.minutes, confidence: f.confidence, score: hasScore ? f.score : null },
+  );
 
   const result: CheckinResult = {
     node: { node_id: node.node_id, name: node.name, category: node.category },
-    mastery_before: round(m, 2),
-    mastery_after: round(mastery, 2),
-    est_before: round(predicted, 1),
-    est_after: round(baseHours * newPace, 1),
-    message: "",
+    mastery_before: update.mastery.from,
+    mastery_after: update.mastery.to,
+    est_before: update.estimate.from,
+    est_after: update.estimate.to,
+    message: describeUpdate(node.name, node.category, update),
   };
-  result.message = `${node.name}: mastery ${result.mastery_before.toFixed(2)} → ${result.mastery_after.toFixed(2)}, estimate ${result.est_before}h → ${result.est_after}h`;
 
   must(
     await db.from("events").insert({
@@ -102,19 +101,14 @@ export async function applyCheckin(studentId: string, input: CheckinInput): Prom
         confidence: f.confidence,
         ...(hasScore ? { score: f.score } : {}),
         // Marks the event as already applied, so the Patterns agent doesn't count it again.
-        model_update: {
-          mastery: { from: result.mastery_before, to: result.mastery_after },
-          confidence: { from: round(c, 2), to: round(confidence, 2) },
-          pace: { from: round(pace, 3), to: round(newPace, 3) },
-          estimate: { from: result.est_before, to: result.est_after },
-        },
+        model_update: update,
         summary: result.message,
       },
     }),
     "Saving check-in",
   );
 
-  paceByCategory[node.category] = round(newPace, 3);
+  paceByCategory[node.category] = update.pace.to;
   must(
     await db.from("learning_profile").upsert(
       { student_id: studentId, pace_by_category: paceByCategory, updated_at: new Date().toISOString() },
@@ -131,8 +125,8 @@ export async function applyCheckin(studentId: string, input: CheckinInput): Prom
       {
         student_id: studentId,
         node_id: f.node_id,
-        mastery: round(mastery, 4),
-        confidence: round(confidence, 4),
+        mastery: update.mastery.to,
+        confidence: update.confidence.to,
         evidence: [line, ...(skill?.evidence ?? [])].slice(0, MAX_EVIDENCE),
         last_practiced: new Date().toISOString(),
       },

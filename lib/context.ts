@@ -126,21 +126,27 @@ export async function buildContext(agent: AgentName, studentId: string): Promise
           .limit(20)
           .then((r) => rows(r, "Reading events")),
       ]);
+      // Events before this were already reviewed by an earlier Patterns output (golden included).
+      const lastReviewAt = (lastReview as { created_at: string }[])[0]?.created_at ?? null;
       return {
         student_skills: skills,
         learning_profile: profile,
         node_categories: Object.fromEntries(
           (catalog as { node_id: string; category: string }[]).map((n) => [n.node_id, n.category]),
         ),
-        // Events before this were already reviewed by an earlier Patterns output (golden included).
-        last_review_at: (lastReview as { created_at: string }[])[0]?.created_at ?? null,
+        last_review_at: lastReviewAt,
         recent_events: (events as { type: string; node_id: string | null; payload: Record<string, unknown>; created_at: string }[]).map(
           // A check-in's model_update means code already applied it to mastery, confidence, and pace.
-          ({ payload: { model_update, summary: _s, ...reported }, ...e }) => ({
-            ...e,
-            payload: reported,
-            applied: model_update !== undefined,
-          }),
+          ({ payload: { model_update, summary: _s, ...reported }, ...e }) => {
+            const applied = model_update !== undefined;
+            return {
+              ...e,
+              payload: reported,
+              applied,
+              // The only events the agent may turn into skill_deltas / pace_updates.
+              new_evidence: !applied && (lastReviewAt === null || Date.parse(e.created_at) > Date.parse(lastReviewAt)),
+            };
+          },
         ),
       };
     }

@@ -5,8 +5,9 @@ import { useEffect, useState } from "react";
 import { useStudentId } from "@/lib/useStudent";
 import { getContext, getStudent, submitAgentReply } from "../actions";
 import { Button, Card, CopyButton, StatusMessage, textareaClass, type Status } from "../ui";
-import { createStudent, fetchJobs } from "./actions";
+import { createStudent, fetchJobs, runStep } from "./actions";
 import type { FetchedJob } from "@/lib/jobs";
+import type { AgentName } from "@/lib/contracts";
 
 type Doc = { name: string; text: string; note?: string };
 
@@ -53,6 +54,9 @@ export default function UploadPage() {
   const [reply, setReply] = useState("");
   const [saveStatus, setSaveStatus] = useState<Status>(null);
   const [saving, setSaving] = useState(false);
+  const [steps, setSteps] = useState<{ agent: AgentName; label: string; state: "wait" | "run" | "ok" | "fail"; note?: string }[]>([]);
+  const [generating, setGenerating] = useState(false);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     if (!studentId) return;
@@ -146,6 +150,70 @@ export default function UploadPage() {
           </div>
         ))}
       </Card>
+      <Card
+        title="3. Generate the profile"
+        subtitle="Runs Input, Patterns, Opportunity, Knowledge and Advisor in order, saves each result, then opens the dashboard. This takes a few minutes."
+      >
+        <Button
+          disabled={generating || docs.every((d) => !d.text.trim())}
+          onClick={async () => {
+            const plan: { agent: AgentName; label: string }[] = [
+              { agent: "input", label: "Input: reading documents, building the skill graph" },
+              { agent: "patterns", label: "Learning Patterns: how the student learns" },
+              { agent: "opportunity", label: "Opportunity: fetching and sorting real postings" },
+              { agent: "knowledge", label: "Knowledge: what to learn next" },
+              { agent: "advisor", label: "Advisor: this week's plan" },
+            ];
+            setGenerating(true);
+            setDone(false);
+            const state: { agent: AgentName; label: string; state: "wait" | "run" | "ok" | "fail"; note?: string }[] = plan.map((p) => ({ ...p, state: "wait" }));
+            setSteps([...state]);
+            const documents = docs
+              .filter((d) => d.text.trim())
+              .map((d) => `--- DOCUMENT: ${d.name} ---\n${d.text.trim()}`)
+              .join("\n\n");
+            for (let i = 0; i < plan.length; i++) {
+              state[i].state = "run";
+              setSteps([...state]);
+              const r = await runStep(plan[i].agent, studentId, documents);
+              if (r.ok) {
+                state[i].state = "ok";
+                state[i].note = r.warnings.join(" ");
+                setSteps([...state]);
+              } else {
+                state[i].state = "fail";
+                state[i].note = r.errors.join(" ");
+                setSteps([...state]);
+                setGenerating(false);
+                return;
+              }
+            }
+            getStudent(studentId).then((x) => setStudentName(x.ok && x.student ? x.student.name : ""));
+            setDone(true);
+            setGenerating(false);
+          }}
+        >
+          {generating ? "Generating..." : "Generate profile and dashboard"}
+        </Button>
+        <ul className="space-y-1 text-sm">
+          {steps.map((st) => (
+            <li key={st.agent}>
+              {st.state === "ok" ? "✓" : st.state === "run" ? "…" : st.state === "fail" ? "✗" : "○"} {st.label}
+              {st.note && <span className="block pl-5 text-xs text-red-700 dark:text-red-300">{st.note}</span>}
+            </li>
+          ))}
+        </ul>
+        {done && (
+          <p className="text-sm">
+            <Link href={`/?student=${studentId}`} className="font-medium underline">
+              Open the dashboard
+            </Link>
+          </p>
+        )}
+      </Card>
+      <details className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+        <summary className="cursor-pointer text-sm font-medium">Advanced: run the agents by hand in Superhuman Go</summary>
+        <div className="mt-4 space-y-6">
       <Card title="3. Copy into the Input agent" subtitle="Paste this into the Input agent's chat in Superhuman Go.">
         {error && <p className="text-sm text-red-700 dark:text-red-300">{error}</p>}
         <div className="flex items-center justify-between">
@@ -237,6 +305,8 @@ export default function UploadPage() {
           <Link href={`/?student=${studentId}`} className="underline">open this student's dashboard</Link>.
         </p>
       </Card>
+        </div>
+      </details>
       </>
       )}
     </div>

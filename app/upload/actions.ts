@@ -27,3 +27,31 @@ export async function createStudent(
     return { ok: false, error: (e as Error).message };
   }
 }
+
+import { runAgentStep, type StepResult } from "@/lib/runner";
+import type { AgentName } from "@/lib/contracts";
+
+// One pipeline step. Before Opportunity, fetch real postings matched to what Input learned.
+export async function runStep(
+  agent: AgentName,
+  studentId: string,
+  documents: string,
+): Promise<StepResult> {
+  try {
+    if (agent === "opportunity") {
+      const { data } = await supabase()
+        .from("students")
+        .select("career_goals, interests, major")
+        .eq("id", studentId)
+        .maybeSingle();
+      const words = [...(data?.career_goals ?? []), ...(data?.interests ?? []), data?.major ?? ""]
+        .join(" ")
+        .split(/[\s,]+/)
+        .filter((w) => w.length > 2);
+      await fetchRealOpportunities(["software", ...words]);
+    }
+    return await runAgentStep(agent, studentId, agent === "input" ? documents : "");
+  } catch (e) {
+    return { ok: false, errors: [(e as Error).message] };
+  }
+}

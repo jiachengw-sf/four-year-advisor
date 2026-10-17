@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStudentId } from "@/lib/useStudent";
-import { getContext } from "../actions";
-import { Button, Card, CopyButton, textareaClass } from "../ui";
-import { fetchJobs } from "./actions";
+import { getContext, getStudent, submitAgentReply } from "../actions";
+import { Button, Card, CopyButton, StatusMessage, textareaClass, type Status } from "../ui";
+import { createStudent, fetchJobs } from "./actions";
 import type { FetchedJob } from "@/lib/jobs";
 
 type Doc = { name: string; text: string; note?: string };
@@ -38,7 +38,7 @@ async function readFile(file: File): Promise<Doc> {
 }
 
 export default function UploadPage() {
-  const { studentId, ready } = useStudentId();
+  const { studentId, setStudentId, ready } = useStudentId();
   const [context, setContext] = useState("");
   const [docs, setDocs] = useState<Doc[]>([]);
   const [error, setError] = useState("");
@@ -46,22 +46,23 @@ export default function UploadPage() {
   const [jobs, setJobs] = useState<FetchedJob[]>([]);
   const [jobStatus, setJobStatus] = useState("");
   const [fetching, setFetching] = useState(false);
+  const [studentName, setStudentName] = useState("");
+  const [newName, setNewName] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
+  const [reply, setReply] = useState("");
+  const [saveStatus, setSaveStatus] = useState<Status>(null);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (!studentId) return;
+    getStudent(studentId).then((r) => setStudentName(r.ok && r.student ? r.student.name : ""));
     getContext("input", studentId).then((r) =>
       r.ok ? setContext(JSON.stringify(r.context, null, 2)) : setError(`Error loading context: ${r.error}`),
     );
   }, [studentId]);
 
   if (!ready) return null;
-  if (!studentId) {
-    return (
-      <p>
-        No demo student yet. <Link href="/admin" className="underline">Create one in Admin</Link> first.
-      </p>
-    );
-  }
 
   const combined = [
     "Agent context:",
@@ -71,9 +72,49 @@ export default function UploadPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-semibold">Upload documents</h1>
+      <h1 className="text-2xl font-semibold">Start: add a student's real information</h1>
       <Card
-        title="1. Add the student's documents"
+        title="1. Pick the student"
+        subtitle="Everything below is saved to this student. Create a new one for each real person; don't reuse the demo student."
+      >
+        <p className="text-sm">
+          Current student: <strong>{studentId ? studentName || "(unnamed)" : "none"}</strong>
+          {studentId && <span className="ml-2 text-xs text-zinc-500">{studentId}</span>}
+        </p>
+        <div className="flex items-center gap-2">
+          <input
+            className={textareaClass}
+            value={newName}
+            onChange={(e) => setNewName(e.target.value)}
+            placeholder="Name (the Input agent will fill in the rest from the documents)"
+          />
+          <Button
+            disabled={creating}
+            onClick={async () => {
+              setCreating(true);
+              setCreateError("");
+              const r = await createStudent(newName);
+              if (r.ok) {
+                setStudentId(r.id);
+                setNewName("");
+                setJobs([]);
+                setReply("");
+                setSaveStatus(null);
+              } else setCreateError(r.error);
+              setCreating(false);
+            }}
+          >
+            {creating ? "Creating..." : "Create new student"}
+          </Button>
+        </div>
+        {createError && <p className="text-sm text-red-700 dark:text-red-300">{createError}</p>}
+      </Card>
+      {!studentId ? (
+        <p className="text-sm">Create a student to continue.</p>
+      ) : (
+      <>
+      <Card
+        title="2. Add the student's documents"
         subtitle="Resume, UC PIQs, transcript, LinkedIn. PDF, .txt or .md. Text is read in your browser and goes nowhere until you paste it into the Input agent."
       >
         <input
@@ -105,7 +146,7 @@ export default function UploadPage() {
           </div>
         ))}
       </Card>
-      <Card title="2. Copy into the Input agent" subtitle="Paste this into the Input agent's chat in Superhuman Go.">
+      <Card title="3. Copy into the Input agent" subtitle="Paste this into the Input agent's chat in Superhuman Go.">
         {error && <p className="text-sm text-red-700 dark:text-red-300">{error}</p>}
         <div className="flex items-center justify-between">
           <span className="text-sm">{docs.filter((d) => d.text.trim()).length} document(s) included</span>
@@ -113,8 +154,35 @@ export default function UploadPage() {
         </div>
         <pre className="max-h-96 overflow-auto rounded-md bg-zinc-100 p-3 text-xs dark:bg-zinc-950">{combined}</pre>
       </Card>
+      <Card title="4. Paste the Input agent's reply" subtitle="The last json block is validated and saved to this student.">
+        <textarea
+          className={textareaClass}
+          rows={8}
+          placeholder="Paste the whole reply from the Input agent."
+          value={reply}
+          onChange={(e) => setReply(e.target.value)}
+        />
+        <Button
+          disabled={saving || !reply.trim()}
+          onClick={async () => {
+            setSaving(true);
+            const r = await submitAgentReply("input", studentId, reply, false);
+            if (r.ok) {
+              setSaveStatus({ kind: "ok", message: `Saved (${r.id}).`, details: r.warnings });
+              setReply("");
+              getStudent(studentId).then((x) => setStudentName(x.ok && x.student ? x.student.name : ""));
+            } else {
+              setSaveStatus({ kind: "error", message: "Not saved. Fix these and paste again:", details: r.errors });
+            }
+            setSaving(false);
+          }}
+        >
+          {saving ? "Saving..." : "Validate and save"}
+        </Button>
+        <StatusMessage status={saveStatus} />
+      </Card>
       <Card
-        title="3. Fetch real opportunities"
+        title="5. Fetch real opportunities"
         subtitle="Run this after Input and before the Opportunity agent. It pulls current internship postings from company job boards (Greenhouse) and puts the best keyword matches in the opportunity list the agent sees."
       >
         <input
@@ -151,9 +219,14 @@ export default function UploadPage() {
           ))}
         </ul>
       </Card>
-      <p className="text-sm">
-        Then paste the agent's reply on <Link href="/agents" className="underline">/agents</Link>.
-      </p>
+      <Card title="6. Run the rest" subtitle="Patterns, Opportunity, Knowledge, then Advisor, in that order.">
+        <p className="text-sm">
+          <Link href="/agents" className="underline">Open Agents</Link> to copy each context and paste each reply. Then{" "}
+          <Link href={`/?student=${studentId}`} className="underline">open this student's dashboard</Link>.
+        </p>
+      </Card>
+      </>
+      )}
     </div>
   );
 }

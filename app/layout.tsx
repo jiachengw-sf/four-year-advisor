@@ -16,6 +16,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/" className="font-semibold">
               4-Year Advisor
             </Link>
+            <Link href="/upload" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+              Start
+            </Link>
             <Link href="/agents" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
               Agents
             </Link>

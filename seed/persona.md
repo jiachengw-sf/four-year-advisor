@@ -15,10 +15,11 @@ Any of these, in whatever form they'd naturally exist (PDF, DOCX, screenshot, co
 
 More documents make a better demo, but even two or three are enough. Put files in `seed/persona/`, or paste text at the bottom of this page.
 
-## Only two rules
+## Rules
 
-1. **Fictional.** Don't copy a real person's documents, and don't use real people's names.
-2. **No real contact details:** no phone number, email, home address, student ID, or birthdate. This repo is public.
+1. **Maya is fictional.** Her documents are made up, and she's the student the demo is built around.
+2. **Real public profiles are allowed for testing.** `example_personas/` holds summaries of real students, compiled from their public resumes, portfolios and GitHub. Use them to check that the agents handle different kinds of students. Load them on a separate test student, never on Maya.
+3. **No real contact details in the repo:** no phone number, email, home address, student ID, or birthdate, even when the source document has them. This repo is public.
 
 ## Who Maya is
 

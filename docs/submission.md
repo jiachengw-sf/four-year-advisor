@@ -27,7 +27,7 @@ A knowledge map and a Check in button sit alongside.
 Five agents run in Superhuman Go:
 
 - **Input** reads a resume, transcript, essays or LinkedIn export and builds the skill graph. It lists what it isn't sure about.
-- **Opportunity** sorts internships, research and clubs into ready, almost and long-term, and hands missing skills to Knowledge.
+- **Opportunity** sorts internships into ready, almost and long-term and hands missing skills to Knowledge. Postings are fetched live from company job boards (Greenhouse), with real links.
 - **Knowledge** picks what to learn next, with resources and milestones.
 - **Learning Patterns** finds which methods work and how fast the student learns each topic.
 - **Advisor** combines everything into the weekly plan and explains what changed.
@@ -53,5 +53,5 @@ Superhuman Go, Next.js, Supabase, zod, React Flow.
 ## Next
 
 - Connect the agents directly instead of copy and paste.
-- Pull live postings from Indeed and LinkedIn and match them to each student's resume.
+- Add more job boards and deadlines, and match postings to each student's resume in more detail.
 - Add human advisors, so a student arrives at a meeting knowing their gaps.

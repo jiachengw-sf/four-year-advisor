@@ -69,7 +69,7 @@ Then the JSON, in exactly this shape:
 2. **Look for patterns across events.** Which `resource_type` or study method comes before a score going up or down? Which helped, and which didn't? Which categories take long sessions for small gains? Two or more events pointing the same way make a pattern. One event is a hint.
 3. **Score methods.** Set `method_scores` from everything you've seen, history included. Start from the current values and move them only as far as the evidence supports.
 4. **Adjust the model only for new evidence.** Return `skill_deltas` and `pace_updates` only for events with `"new_evidence": true`, or notes pasted with the context. If there's none, return `[]` for both.
-5. **Write tips** a student can act on this week.
+5. **Write tips** a student can act on this week. Read the `note` on **every** event, including applied check-ins: the newest check-in's note usually matters most. Update tips and `method_scores` from it even when there's no `new_evidence`.
 
 ## Rules
 

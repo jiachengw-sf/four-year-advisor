@@ -24,6 +24,24 @@ Demo student: Maya Lopez, first-year CS major (see `seed/persona.md` and `sample
 
 - Submit a check-in: "45 minutes on graphs, still confused," confidence 2.
 - Run the **Learning Patterns agent**, then the **Advisor agent**.
+
+**Exact check-in (Check in button, bottom right).** It must be the first check-in on Maya after the live agent run, so the on-stage change is clean:
+
+| Field | Value |
+|---|---|
+| Skill | Graph algorithms |
+| Minutes studied | 45 |
+| Confidence | 2 |
+| What did you do? | 45 minutes on graphs, still confused |
+| Quiz score | leave empty |
+
+Expected, with Maya at graph algorithms mastery 0.40 and algorithms pace 1.4 (Input 0.2 + Patterns delta 0.2):
+
+- **Toast:** "Graph algorithms: mastery 0.40 → 0.38, estimate 11.2h → 12.6h (you're taking longer on algorithms)"
+- **Knowledge map:** the Graph algorithms node turns from amber to red (red is below 0.40), and its panel shows 12.6h and "Check-in: 45 min, confidence 2/5".
+- **What changed and why:** updates only after the Patterns and Advisor re-runs, not on the check-in alone.
+
+If the live run leaves different values, the toast numbers change. Check the graph node's mastery and estimate before going on stage. The amber → red flip happens only if graph mastery is 0.40–0.42 going in. Below 0.40 it's already red, and above 0.42 it stays amber; the estimate still rises either way.
 - Show the **"What changed and why"** card: "Graph algorithms moved to #1 after your check-in said you were still confused." This week's plan now leads with a practice set, not a video.
 
 ## 5. Close (10s)

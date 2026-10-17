@@ -1,0 +1,29 @@
+MAYA LOPEZ
+Westbrook State University · B.S. Computer Science (expected May 2030)
+Project code and portfolio available on request
+
+EDUCATION
+Westbrook State University — Computer Science, first year (Fall 2026–)
+  Current: CS 101 Intro to Programming (Python), MATH 220 Multivariable Calculus, WRIT 110
+Ridgeview High School — graduated June 2026, GPA 3.91 (unweighted)
+  AP Computer Science A (score: 4) · AP Calculus BC (score: 5) · AP Physics 1 (4)
+
+EXPERIENCE
+Peer Tutor — Westbrook Learning Commons                         Sep 2026 – present
+  • ~12 hrs/week tutoring intro Python and Calc I/II, mostly drop-in
+  • 30+ students so far this term; built a shared bank of practice problems
+Creator / Lead Dev — PeerBook (Ridgeview HS Peer Tutoring Program)   Jan 2025 – Jun 2026
+  • Built a Flask + SQLite web app so students could book peer-tutoring sessions
+  • ~420 bookings over the 2025–26 school year, 35 tutors, replaced a paper sign-up sheet
+  • Added email reminders + a simple admin dashboard; ran it on a free hosting tier
+Math Club — Treasurer                                            2024 – 2026
+  • Ran a 4-week "intro to statistics" unit for club members (mean/variance, basic plots)
+
+PROJECTS
+  • PeerBook (see above) — Python, Flask, SQLite, Jinja templates, HTML/CSS
+  • "Digit guesser" — followed an online tutorial to train a small image classifier in Python (one weekend)
+
+SKILLS
+  Languages: Python, Java, C++, SQL, HTML/CSS, JavaScript (basic)
+  Tools: Git, Flask, VS Code
+  Interests: machine learning, ed-tech, helping people learn

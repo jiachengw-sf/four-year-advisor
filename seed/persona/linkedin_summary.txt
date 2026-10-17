@@ -1,0 +1,14 @@
+LinkedIn (copied text)
+
+Maya Lopez
+CS @ Westbrook State | Peer Tutor | Building tools that help students learn
+
+About
+First-year CS student. I like making things that make learning less painful. In high school I built PeerBook, a booking site for our peer-tutoring program (Flask + SQLite), and now I tutor intro Python and calculus at the Learning Commons (~12 hrs a week). Looking for a first/second-year software engineering internship for summer 2027 (STEP-style programs). Curious about machine learning but very much a beginner.
+
+Experience
+Peer Tutor · Westbrook Learning Commons · Sep 2026 – Present
+Creator · PeerBook (Ridgeview HS) · Jan 2025 – Jun 2026 · 400+ bookings
+
+Skills
+Python · Flask · Java · C++ · SQL · Tutoring · Machine Learning

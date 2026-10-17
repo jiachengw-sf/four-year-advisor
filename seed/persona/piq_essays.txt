@@ -1,0 +1,10 @@
+UC Personal Insight Questions — Maya Lopez (submitted Nov 2025)
+
+PIQ 2 — Creative side
+I don't paint or play an instrument, but I think building PeerBook was the most creative thing I've done. Our tutoring program used a clipboard on the library door, and half the sessions got double-booked. Over winter break I taught myself Flask from the docs and some YouTube, and by February we had a site where students picked a time slot and a tutor. It wasn't pretty. The first version crashed when two people booked at the same time, and I had to learn what a database transaction was at 1am. By the end of the year it had handled about 420 bookings, and the program coordinator asked me to train the next student who'd run it.
+
+PIQ 4 — An educational barrier
+Honestly, recursion almost made me quit AP CS. Loops made sense to me, but the first time we traced a recursive function with two calls in it I completely lost track of where I was. I could copy the factorial example, but I couldn't tell you why it worked. I went to my teacher's office hours three times and drew call stacks on paper until it sort of clicked, and I still get lost when a problem has more than one recursive call. I passed the exam with a 4, but recursion is the thing I'd most like to really understand, because now I'm the one tutoring other students and I don't want to fake it.
+
+PIQ 6 — Favorite academic subject
+Calculus BC was my favorite class because it finally felt like math was connected to things. My teacher showed us how derivatives show up in how a computer "learns" (gradient descent), and that's how I got curious about machine learning. I followed one online tutorial that trained a tiny model to recognize handwritten digits. I understood maybe half of it, especially the matrix parts, which we never covered in high school. I want to study CS so I can build tools that help students learn, maybe something like PeerBook but smarter.

@@ -1,0 +1,16 @@
+WESTBROOK STATE UNIVERSITY — UNOFFICIAL TRANSCRIPT (student copy)
+Student: LOPEZ, MAYA            Program: BS-CMPSC   Level: Undergraduate   Class: Freshman
+-----------------------------------------------------------------------------------------
+TRANSFER / TEST CREDIT
+  AP CSA   AP Computer Science A        score 4   -> CMPSC 1XX (elective)     3.0 cr
+  AP CALBC AP Calculus BC                score 5   -> MATH 150 + MATH 151      8.0 cr
+  AP PHY1  AP Physics 1                  score 4   -> PHYS 1XX                  4.0 cr
+-----------------------------------------------------------------------------------------
+TERM: FALL 2026  (in progress)
+  CMPSC 101   INTRO TO PROGRAMMING (PYTHON)      4.0   IP
+  MATH  220   MULTIVARIABLE CALCULUS             4.0   IP
+  WRIT  110   FIRST-YEAR WRITING                 3.0   IP
+  UNIV  100   FIRST-YEAR SEMINAR                 1.0   IP
+-----------------------------------------------------------------------------------------
+NOTES: No linear algebra (MATH 240) or data structures/algorithms (CMPSC 221/321) on record.
+       Midterm progress report CMPSC 101: A-   MATH 220: B+

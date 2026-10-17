@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useStudentId } from "@/lib/useStudent";
 import { getContext } from "../actions";
-import { Card, CopyButton, textareaClass } from "../ui";
+import { Button, Card, CopyButton, textareaClass } from "../ui";
+import { fetchJobs } from "./actions";
+import type { FetchedJob } from "@/lib/jobs";
 
 type Doc = { name: string; text: string; note?: string };
 
@@ -40,6 +42,10 @@ export default function UploadPage() {
   const [context, setContext] = useState("");
   const [docs, setDocs] = useState<Doc[]>([]);
   const [error, setError] = useState("");
+  const [keywords, setKeywords] = useState("software, machine learning, data");
+  const [jobs, setJobs] = useState<FetchedJob[]>([]);
+  const [jobStatus, setJobStatus] = useState("");
+  const [fetching, setFetching] = useState(false);
 
   useEffect(() => {
     if (!studentId) return;
@@ -106,6 +112,44 @@ export default function UploadPage() {
           <CopyButton text={combined} />
         </div>
         <pre className="max-h-96 overflow-auto rounded-md bg-zinc-100 p-3 text-xs dark:bg-zinc-950">{combined}</pre>
+      </Card>
+      <Card
+        title="3. Fetch real opportunities"
+        subtitle="Run this after Input and before the Opportunity agent. It pulls current internship postings from company job boards (Greenhouse) and puts the best keyword matches in the opportunity list the agent sees."
+      >
+        <input
+          className={textareaClass}
+          value={keywords}
+          onChange={(e) => setKeywords(e.target.value)}
+          placeholder="Comma-separated keywords, e.g. software, machine learning"
+        />
+        <Button
+          disabled={fetching}
+          onClick={async () => {
+            setFetching(true);
+            setJobStatus("Fetching...");
+            const r = await fetchJobs(keywords.split(","));
+            if (r.ok) {
+              setJobs(r.jobs);
+              setJobStatus(`Saved ${r.jobs.length} postings. Now run the Opportunity agent.`);
+            } else {
+              setJobStatus(r.error);
+            }
+            setFetching(false);
+          }}
+        >
+          {fetching ? "Fetching..." : "Fetch real opportunities"}
+        </Button>
+        {jobStatus && <p className="text-sm">{jobStatus}</p>}
+        <ul className="space-y-1 text-sm">
+          {jobs.map((j) => (
+            <li key={j.opportunity_id}>
+              <a href={j.link} target="_blank" rel="noreferrer" className="underline">
+                {j.title}
+              </a>
+            </li>
+          ))}
+        </ul>
       </Card>
       <p className="text-sm">
         Then paste the agent's reply on <Link href="/agents" className="underline">/agents</Link>.

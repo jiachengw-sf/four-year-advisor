@@ -24,6 +24,8 @@ function must<T>(res: { data: T | null; error: { message: string } | null }, wha
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+// A Patterns delta on a skill the student has no row for starts here, not at 0: no row means unknown, not unlearned.
+const UNKNOWN_SKILL_PRIOR = { mastery: 0.3, confidence: 0.2 };
 
 function referencedNodes(out: AgentOutput): string[] {
   switch (out.agent) {
@@ -241,8 +243,8 @@ async function savePatterns(studentId: string, out: PatternsOutput, isGolden: bo
       return {
         student_id: studentId,
         node_id: d.node_id,
-        mastery: clamp01(Number(cur?.mastery ?? 0) + d.mastery_delta),
-        confidence: clamp01(Number(cur?.confidence ?? 0) + d.confidence_delta),
+        mastery: clamp01(Number(cur?.mastery ?? UNKNOWN_SKILL_PRIOR.mastery) + d.mastery_delta),
+        confidence: clamp01(Number(cur?.confidence ?? UNKNOWN_SKILL_PRIOR.confidence) + d.confidence_delta),
         last_practiced: new Date().toISOString(),
       };
     });

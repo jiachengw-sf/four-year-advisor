@@ -152,21 +152,33 @@ export default function UploadPage() {
           <span className="text-sm">{docs.filter((d) => d.text.trim()).length} document(s) included</span>
           <CopyButton text={combined} />
         </div>
-        <pre className="max-h-96 overflow-auto rounded-md bg-zinc-100 p-3 text-xs dark:bg-zinc-950">{combined}</pre>
+        <details className="text-xs">
+          <summary className="cursor-pointer text-zinc-500">Show what will be copied</summary>
+          <pre className="mt-2 max-h-96 overflow-auto rounded-md bg-zinc-100 p-3 dark:bg-zinc-950">{combined}</pre>
+        </details>
       </Card>
-      <Card title="4. Paste the Input agent's reply" subtitle="The last json block is validated and saved to this student.">
+      <Card title="4. Paste the Input agent's reply" subtitle="Copy the agent's whole reply in Go, then click the button. It reads your clipboard, validates it and saves it. No pasting needed.">
         <textarea
           className={textareaClass}
-          rows={8}
-          placeholder="Paste the whole reply from the Input agent."
+          rows={3}
+          placeholder="(Optional) or paste the reply here instead."
           value={reply}
           onChange={(e) => setReply(e.target.value)}
         />
         <Button
-          disabled={saving || !reply.trim()}
+          disabled={saving}
           onClick={async () => {
+            let text = reply;
+            if (!text.trim()) {
+              try {
+                text = await navigator.clipboard.readText();
+              } catch {
+                setSaveStatus({ kind: "error", message: "Couldn't read the clipboard. Paste the reply into the box." });
+                return;
+              }
+            }
             setSaving(true);
-            const r = await submitAgentReply("input", studentId, reply, false);
+            const r = await submitAgentReply("input", studentId, text, false);
             if (r.ok) {
               setSaveStatus({ kind: "ok", message: `Saved (${r.id}).`, details: r.warnings });
               setReply("");
@@ -177,7 +189,7 @@ export default function UploadPage() {
             setSaving(false);
           }}
         >
-          {saving ? "Saving..." : "Validate and save"}
+          {saving ? "Saving..." : reply.trim() ? "Validate and save" : "Save reply from clipboard"}
         </Button>
         <StatusMessage status={saveStatus} />
       </Card>

@@ -81,7 +81,7 @@ Then the JSON, in exactly this shape:
 
 ## Field rules
 
-- `skill_deltas`: one entry per node with new evidence, or `[]`. Leave out a node whose deltas would both be 0. Each delta is a number from -0.3 to 0.3 with at most two decimals, added to the current value. A low new quiz score lowers mastery and raises confidence, because you're now surer where they stand.
+- `skill_deltas`: one entry per node with new evidence, or `[]`. Leave out a node whose deltas would both be 0. A node that isn't in `student_skills` starts at 0.3 mastery and 0.2 confidence before your delta is added. Each delta is a number from -0.3 to 0.3 with at most two decimals, added to the current value. A low new quiz score lowers mastery and raises confidence, because you're now surer where they stand.
 - `pace_updates`: `{ category, multiplier }` per category, or `[]`. Change a category's pace only when 2 or more new timed sessions in that category support it. `multiplier` replaces the current `pace_by_category` value: above 1 means slower than average, below 1 means faster. Start from the current value and move it gradually.
 - `method_scores`: **all four keys, always**: `practice`, `video`, `reading`, `project`, each from 0 to 1. With no evidence for a method, keep its current value.
 - `tips`: 2 or 3 short sentences addressed to the student, each tied to something in their events. These replace the current tips, so keep any that are still true.

@@ -12,6 +12,7 @@ import {
   type SampleResult,
 } from "../actions";
 import { useStudentId } from "@/lib/useStudent";
+import { resetDemoAction } from "./actions";
 import { Button, Card, StatusMessage, textareaClass, type Status } from "../ui";
 import type { ImportResult } from "@/lib/seed";
 
@@ -71,6 +72,7 @@ export default function AdminPage() {
   const [studentName, setStudentName] = useState<string | null>(null);
   const [studentStatus, setStudentStatus] = useState<Status>(null);
   const [eventsStatus, setEventsStatus] = useState<Status>(null);
+  const [resetStatus, setResetStatus] = useState<Status>(null);
   const [samples, setSamples] = useState<SampleResult[] | null>(null);
   const [busy, setBusy] = useState<string | null>(null);
 
@@ -136,6 +138,25 @@ export default function AdminPage() {
           Load seed/events.json
         </Button>
         <StatusMessage status={eventsStatus} />
+      </Card>
+
+      <Card
+        title="Reset demo"
+        subtitle="Clears this student's agent outputs, skills, and learning profile, then reloads the seed files and seed/events.json."
+      >
+        <Button
+          disabled={!studentId || busy !== null}
+          onClick={async () => {
+            if (!confirm("Clear all agent outputs, skills, and the learning profile for this student, then reseed?")) return;
+            setBusy("reset");
+            setSamples(null);
+            setResetStatus(toStatus(await resetDemoAction(studentId!)));
+            setBusy(null);
+          }}
+        >
+          {busy === "reset" ? "Resetting..." : "Reset demo"}
+        </Button>
+        <StatusMessage status={resetStatus} />
       </Card>
 
       <Card

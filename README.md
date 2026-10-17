@@ -52,6 +52,8 @@ An array of about 10 events for the demo persona, spread over a few weeks and sh
 
 Then open http://localhost:3000/admin, create the demo student, import the CSVs, and click "Load samples".
 
+Or run `npm run seed` to load the skill catalog, opportunities, demo student (the first row of `students`, created if missing), and `seed/events.json` from the command line.
+
 ## Repo map
 
 ```

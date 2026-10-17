@@ -23,9 +23,9 @@ Word-for-word script for the video. It follows [demo-script.md](demo-script.md).
 > "Notice what it also returns: a list of skills it isn't sure about, and it asks Maya to verify them. The system knows what it doesn't know."
 
 ## 1:00–1:40 Dashboard cards
-**On screen:** dashboard `/`. Scroll slowly: **What else do I need**, then **What should I learn**, then **Handoff feed**, then **Learning patterns**.
+**On screen:** dashboard `/`. Scroll slowly: **What opportunity should I pursue**, then **What should I learn**, then **Handoff feed**, then **Learning patterns**.
 
-> "Here's her dashboard. Under 'What else do I need', the Opportunity agent sorts real opportunities. The ACM club is ready now. Google STEP is almost in reach. It's missing graph algorithms, and the deadline is November 15. The ML lab is long term."
+> "Here's her dashboard. Under 'What opportunity should I pursue', the Opportunity agent sorts opportunities by how close she is. The ACM club is ready now. Google STEP is almost in reach. It's missing graph algorithms, and the deadline is November 15. The ML lab is almost there too, but it needs linear algebra and machine learning basics first."
 >
 > "Now 'What should I learn'. Graph algorithms comes first, because the Opportunity agent handed it to the Knowledge agent. The agents can't call each other, so the handoff goes through a shared table. You can see it in the handoff feed, marked as consumed."
 >

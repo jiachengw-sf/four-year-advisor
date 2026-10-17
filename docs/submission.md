@@ -16,7 +16,7 @@ The student's dashboard has seven cards:
 2. **What changed and why:** the reason the plan moved since last time.
 3. **What should I learn:** the next skills, with time estimates and milestones.
 4. **How should I learn it:** resources matched to the methods that work for them.
-5. **What else do I need:** opportunities that are ready, almost reachable, or long-term, and the skills missing for each.
+5. **What opportunity should I pursue:** opportunities that are ready, almost reachable, or long-term, and the skills missing for each.
 6. **Handoff feed:** what one agent passed to another.
 7. **Learning patterns:** how they learn best and how fast, per topic area.
 

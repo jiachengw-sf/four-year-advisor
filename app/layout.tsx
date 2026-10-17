@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DemoToggle } from "./DemoToggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Link href="/admin" className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
               Admin
             </Link>
-            <DemoToggle />
           </nav>
         </header>
         <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>

@@ -3,9 +3,7 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { parseAgentReply, type AgentName, type AgentOutput } from "@/lib/contracts";
-import { recordCheckin, type CheckinForm, type CheckinResult } from "@/lib/checkin";
 import { buildContext } from "@/lib/context";
-import { buildDashboard, type Dashboard } from "@/lib/dashboard";
 import { saveOutput, type SaveResult } from "@/lib/save";
 import { importEvents, importOpportunities, importSkills, type ImportResult } from "@/lib/seed";
 import { supabase } from "@/lib/supabase";
@@ -130,19 +128,4 @@ export async function loadSamples(studentId: string): Promise<SampleResult[]> {
     results.push({ agent, file, result });
   }
   return results;
-}
-
-export async function getDashboard(
-  studentId: string,
-  demoMode: boolean,
-): Promise<{ ok: true; data: Dashboard } | { ok: false; error: string }> {
-  try {
-    return { ok: true, data: await buildDashboard(studentId, demoMode) };
-  } catch (e) {
-    return { ok: false, error: (e as Error).message };
-  }
-}
-
-export async function submitCheckin(studentId: string, form: CheckinForm): Promise<CheckinResult> {
-  return recordCheckin(studentId, form);
 }

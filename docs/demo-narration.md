@@ -38,7 +38,7 @@ Word-for-word script for the video. It follows [demo-script.md](demo-script.md).
 >
 > "Our code updates her mastery and pace right away. The Patterns agent only proposes changes for new evidence, so nothing is counted twice. It reads her note and adjusts the tips."
 >
-> "Then the Advisor agent re-plans. 'What changed and why' says graph algorithms moved to number one after her check-in. This week now leads with a practice set, not a video."
+> "Then the Advisor agent re-plans. Here's 'What changed and why':" *(read the first line of the card aloud exactly as it appears, since graphs may already be #1 and the card may say they stayed there with more time)* "This week still leads with a practice set, not a video."
 
 ## 2:30–2:50 Close
 **On screen:** full dashboard.

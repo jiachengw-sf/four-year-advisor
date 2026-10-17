@@ -1,16 +1,37 @@
 {
   "agent": "patterns",
   "skill_deltas": [
-    { "node_id": "graph_algorithms", "mastery_delta": 0.2, "confidence_delta": 0.2 },
-    { "node_id": "recursion", "mastery_delta": 0.15, "confidence_delta": 0.2 }
+    {
+      "node_id": "graph_algorithms",
+      "mastery_delta": 0.1,
+      "confidence_delta": 0.05
+    },
+    {
+      "node_id": "recursion",
+      "mastery_delta": 0.08,
+      "confidence_delta": 0.03
+    },
+    {
+      "node_id": "python_basics",
+      "mastery_delta": 0.02,
+      "confidence_delta": 0.01
+    }
   ],
   "pace_updates": [
-    { "category": "algorithms", "multiplier": 1.4 }
+    {
+      "category": "algorithms",
+      "multiplier": 1.3
+    }
   ],
-  "method_scores": { "practice": 0.8, "video": 0.3, "reading": 0.5, "project": 0.6 },
+  "method_scores": {
+    "practice": 0.8,
+    "video": 0.3,
+    "reading": 0.5,
+    "project": 0.5
+  },
   "tips": [
-    "Your quiz scores rise after practice problems, not videos: your graph quiz went from 40 to 55 once you switched.",
-    "Algorithms take you about 1.4x the average time, so split graph work into two shorter sessions a week.",
-    "Recursion clicked after 8 practice problems: use the same approach for graph traversal."
+    "Your graph scores rose after practice problems rather than videos: start traversal topics with guided BFS or DFS problems.",
+    "Recursion begins to click after repeated problem solving, so trace a small set of calls on paper before attempting harder problems.",
+    "Algorithms take you longer than average; use two or three shorter sessions instead of one 2–3 hour block."
   ]
 }

@@ -1,8 +1,27 @@
 {
   "agent": "advisor",
   "this_week": [
-    { "title": "Graph algorithms practice set", "node_id": "graph_algorithms", "hours": 3, "reason": "STEP deadline in 4 weeks" },
-    { "title": "Linear algebra chapters 1-3", "node_id": "linear_algebra", "hours": 2, "reason": "Starts the path to the ML lab" }
+    {
+      "title": "Trace 5 recursive call trees on paper, then solve 3 recursion problems",
+      "node_id": "recursion",
+      "hours": 3,
+      "reason": "Recursion is a prerequisite for graph algorithms and starts clicking through repeated practice."
+    },
+    {
+      "title": "Use VisuAlgo Graph Traversal, then solve 3 guided BFS or DFS problems",
+      "node_id": "graph_algorithms",
+      "hours": 3,
+      "reason": "Graph algorithms is the missing skill for Google STEP, due Nov 15."
+    },
+    {
+      "title": "Solve 2 additional BFS or DFS problems on LeetCode",
+      "node_id": "graph_algorithms",
+      "hours": 3,
+      "reason": "Your latest graph quiz was 55%, so more practice is needed before the deadline."
+    }
   ],
-  "what_changed": ["This is your first plan, built around the Nov 15 Google STEP deadline."]
+  "what_changed": [
+    "This is your first weekly plan, built around the Google STEP deadline and your current graph algorithms gap.",
+    "Graph algorithms gets the largest share after practice improved your understanding, while recursion comes first because it supports graph work."
+  ]
 }

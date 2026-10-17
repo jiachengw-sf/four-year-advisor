@@ -1,15 +1,48 @@
 {
   "agent": "opportunity",
   "ready": [
-    { "opportunity_id": "opp_acm_club", "reason": "Matches ML interest; no prerequisites" }
+    {
+      "opportunity_id": "opp_acm_club",
+      "reason": "Matches your machine learning interests and has no prerequisites."
+    }
   ],
   "almost": [
-    { "opportunity_id": "opp_google_step", "reason": "Strong Python", "missing_nodes": ["graph_algorithms"], "deadline": "2026-11-15" }
+    {
+      "opportunity_id": "opp_google_step",
+      "reason": "Your Python is strong; graph algorithms is the one missing skill.",
+      "missing_nodes": [
+        "graph_algorithms"
+      ],
+      "deadline": "2026-11-15"
+    },
+    {
+      "opportunity_id": "opp_ml_lab",
+      "reason": "Your ML interest fits well; linear algebra and ML basics are the two skill gaps.",
+      "missing_nodes": [
+        "linear_algebra",
+        "ml_basics"
+      ],
+      "deadline": null
+    }
   ],
-  "long_term": [
-    { "opportunity_id": "opp_ml_lab", "reason": "Needs linear algebra and ML basics first" }
-  ],
+  "long_term": [],
   "handoffs": [
-    { "to_agent": "knowledge", "opportunity_id": "opp_google_step", "missing_nodes": ["graph_algorithms"], "deadline": "2026-11-15" }
+    {
+      "to_agent": "knowledge",
+      "opportunity_id": "opp_google_step",
+      "missing_nodes": [
+        "graph_algorithms"
+      ],
+      "deadline": "2026-11-15"
+    },
+    {
+      "to_agent": "knowledge",
+      "opportunity_id": "opp_ml_lab",
+      "missing_nodes": [
+        "linear_algebra",
+        "ml_basics"
+      ],
+      "deadline": null
+    }
   ]
 }

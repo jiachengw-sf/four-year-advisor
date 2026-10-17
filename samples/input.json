@@ -4,15 +4,46 @@
     "name": "Maya Lopez",
     "year": 1,
     "major": "Computer Science",
-    "career_goals": ["software engineering internship"],
-    "interests": ["machine learning", "education"],
+    "career_goals": [
+      "software engineering internship",
+      "machine learning for education tools"
+    ],
+    "interests": [
+      "machine learning",
+      "ed-tech",
+      "helping people learn"
+    ],
     "weekly_hours": 10
   },
   "skills": [
-    { "node_id": "python_basics", "mastery": 0.8, "confidence": 0.7, "evidence": "Resume: built a Flask app" },
-    { "node_id": "recursion", "mastery": 0.5, "confidence": 0.4, "evidence": "Essay: mentions struggling with recursive problems in AP CS" },
-    { "node_id": "graph_algorithms", "mastery": 0.2, "confidence": 0.3, "evidence": "No coursework listed; inferred from AP CS syllabus" },
-    { "node_id": "linear_algebra", "mastery": 0.1, "confidence": 0.5, "evidence": "Not taken yet; high school math through calculus" }
+    {
+      "node_id": "python_basics",
+      "mastery": 0.7,
+      "confidence": 0.9,
+      "evidence": "Resume: built and deployed a Flask tutoring app in Python"
+    },
+    {
+      "node_id": "ml_basics",
+      "mastery": 0.3,
+      "confidence": 0.7,
+      "evidence": "PIQ 6: trained a small handwritten-digit classifier"
+    },
+    {
+      "node_id": "linear_algebra",
+      "mastery": 0.2,
+      "confidence": 0.6,
+      "evidence": "PIQ 6: understood about half the matrix concepts in tutorial"
+    },
+    {
+      "node_id": "recursion",
+      "mastery": 0.2,
+      "confidence": 0.8,
+      "evidence": "PIQ 4: still gets lost with multiple recursive calls"
+    }
   ],
-  "verify_nodes": ["recursion"]
+  "verify_nodes": [
+    "recursion",
+    "linear_algebra",
+    "ml_basics"
+  ]
 }

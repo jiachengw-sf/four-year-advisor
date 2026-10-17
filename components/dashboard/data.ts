@@ -67,35 +67,29 @@ async function pickStudent(requested?: string): Promise<Student | null> {
   return rows(res, "Reading student") as Student | null;
 }
 
-// Latest result for an agent; a golden row wins when one exists.
+// Newest result for an agent. Golden rows are only a fallback: they show when nothing newer was saved,
+// so a live reply saved during the demo replaces the saved demo output.
 async function latest<T>(studentId: string, agent: AgentName): Promise<Saved<T>> {
-  const base = () =>
-    supabase()
-      .from("agent_outputs")
-      .select("id, is_golden, created_at, payload")
-      .eq("student_id", studentId)
-      .eq("agent", agent)
-      .eq("kind", "result")
-      .order("created_at", { ascending: false })
-      .limit(1);
-  const golden = rows(await base().eq("is_golden", true), `Reading golden ${agent} output`) as NonNullable<Saved<T>>[];
-  if (golden[0]) return golden[0];
-  const any = rows(await base(), `Reading ${agent} output`) as NonNullable<Saved<T>>[];
-  return any[0] ?? null;
+  const res = await supabase()
+    .from("agent_outputs")
+    .select("id, is_golden, created_at, payload")
+    .eq("student_id", studentId)
+    .eq("agent", agent)
+    .eq("kind", "result")
+    .order("created_at", { ascending: false })
+    .limit(1);
+  return (rows(res, `Reading ${agent} output`) as NonNullable<Saved<T>>[])[0] ?? null;
 }
 
 async function handoffs(studentId: string): Promise<Handoff[]> {
-  const base = () =>
-    supabase()
-      .from("agent_outputs")
-      .select("id, agent, to_agent, consumed, created_at, payload")
-      .eq("student_id", studentId)
-      .eq("kind", "handoff")
-      .order("created_at", { ascending: false })
-      .limit(10);
-  const golden = rows(await base().eq("is_golden", true), "Reading golden handoffs") as Handoff[];
-  if (golden.length) return golden;
-  return rows(await base(), "Reading handoffs") as Handoff[];
+  const res = await supabase()
+    .from("agent_outputs")
+    .select("id, agent, to_agent, consumed, created_at, payload")
+    .eq("student_id", studentId)
+    .eq("kind", "handoff")
+    .order("created_at", { ascending: false })
+    .limit(10);
+  return rows(res, "Reading handoffs") as Handoff[];
 }
 
 export async function loadDashboard(requested?: string): Promise<DashboardData | null> {

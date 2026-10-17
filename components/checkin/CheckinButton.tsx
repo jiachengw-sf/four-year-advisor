@@ -13,6 +13,7 @@ export function CheckinButton({ studentId, skills }: { studentId: string; skills
   const [minutes, setMinutes] = useState("30");
   const [confidence, setConfidence] = useState(3);
   const [score, setScore] = useState("");
+  const [note, setNote] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
@@ -37,6 +38,7 @@ export function CheckinButton({ studentId, skills }: { studentId: string; skills
           minutes: Number(minutes),
           confidence,
           score: score === "" ? null : Number(score),
+          note: note.trim() || undefined,
         }),
       });
       const data = await res.json();
@@ -44,6 +46,7 @@ export function CheckinButton({ studentId, skills }: { studentId: string; skills
       setToast(data.message);
       setOpen(false);
       setScore("");
+      setNote("");
       router.refresh();
     } catch (err) {
       setError((err as Error).message);
@@ -114,6 +117,17 @@ export function CheckinButton({ studentId, skills }: { studentId: string; skills
               ))}
             </div>
           </fieldset>
+          <label className="block space-y-1 text-sm">
+            <span>What did you do? (optional)</span>
+            <input
+              type="text"
+              maxLength={500}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="e.g. BFS practice problems, still confused"
+              className={input}
+            />
+          </label>
           <label className="block space-y-1 text-sm">
             <span>Quiz score (optional, 0–100)</span>
             <input

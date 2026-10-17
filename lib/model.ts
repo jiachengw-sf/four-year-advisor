@@ -10,6 +10,7 @@ export const checkinInput = z.object({
   minutes: z.number().int().min(1, "Minutes must be at least 1").max(1440),
   confidence: z.number().int().min(1).max(5),
   score: z.number().min(0).max(100).nullable().optional(),
+  note: z.string().trim().max(500).optional(), // What the student did; the Patterns agent reads it, the mastery math doesn't.
 });
 export type CheckinInput = z.infer<typeof checkinInput>;
 
@@ -100,6 +101,7 @@ export async function applyCheckin(studentId: string, input: CheckinInput): Prom
         minutes: f.minutes,
         confidence: f.confidence,
         ...(hasScore ? { score: f.score } : {}),
+        ...(f.note ? { note: f.note } : {}),
         // Marks the event as already applied, so the Patterns agent doesn't count it again.
         model_update: update,
         summary: result.message,

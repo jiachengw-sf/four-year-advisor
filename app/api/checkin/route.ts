@@ -3,7 +3,7 @@ import { applyCheckin, checkinInput } from "@/lib/model";
 
 const body = checkinInput.extend({ student_id: z.string().uuid("Missing student id") });
 
-// POST { student_id, node_id, minutes, confidence, score? } → the model update.
+// POST { student_id, node_id, minutes, confidence, score?, note? } → the model update.
 export async function POST(request: Request) {
   const parsed = body.safeParse(await request.json().catch(() => null));
   if (!parsed.success) {
